@@ -1,0 +1,38 @@
+3. 用三元运算符实现<br>
+1）小明和妈妈约定，期末考试如果语文数学成绩都是满分100，<br>
+    周末妈妈就带他去游乐园，否则就只有在家改错题<br>
+
+2）小明考了双百分，妈妈周末带小明去游乐园玩了一天，<br>
+    随后和小明约定，如果明年小明还能拿到双百分并<br>
+    且奥数能够获得华杯赛前90名就带他去迪斯尼乐园，<br>
+    否则就只有后年再努力了<br>
+
+今年的数学成绩<input type="text" id="math1">
+今年的语文成绩<input type="text" name="" id="chinese1">
+<button type="button" onclick="func1()">计算</button>
+<br>
+明年的数学成绩<input type="text" name="" id="math2">
+明年的语文成绩<input type="text" name="" id="chinese2">
+明年的奥数排名<input type="text" name="" id="mathRank">
+<button type="button" onclick="func2()">计算</button>
+
+<script>
+    function func1(){
+        var math1 = parseInt(document.getElementById('math1').value);
+        var chinese1 = parseInt(document.getElementById('chinese1').value);
+        console.log(math1+chinese1)
+        alert(((math1 + chinese1 == 200 && math1 == chinese1) ? "游乐园":"改错题"));
+    }
+
+    function func2(){
+        var math2 = parseInt(document.getElementById('math2').value);
+        var chinese2 = parseInt(document.getElementById('chinese2').value);
+        var mathRank = parseInt(document.getElementById('mathRank').value);
+        console.log(math2+chinese2)
+        alert(((math2 + chinese2 == 200 && mathRank < 90) ? "迪士尼乐园":"后年继续努力"));
+    }
+
+
+    
+
+</script>

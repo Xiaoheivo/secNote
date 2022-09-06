@@ -1,0 +1,28 @@
+用户名：<input type="text" id="user"><br>
+密码：<input type="text" id="password"><br>
+<button value="登录" onclick="compare()">登录</button>
+<script>
+    var coruser = "cz";
+    var corpassword = "123a";
+    var count = 0;
+    function compare() {
+        var user = document.getElementById("user").value;
+        var password = document.getElementById("password").value;
+        if (user != coruser || password != corpassword) {
+            count++;
+            alert("登录失败");
+        }
+        else {
+            count++;
+            if (count <= 3) {
+                alert("登录成功");
+
+            }
+            else {
+                
+
+            }
+        }
+
+    }
+</script>

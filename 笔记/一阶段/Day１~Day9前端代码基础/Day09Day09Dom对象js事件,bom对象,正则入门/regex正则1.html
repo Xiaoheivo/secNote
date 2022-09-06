@@ -1,0 +1,16 @@
+
+
+<script>
+    var str='<a href="https://paper.seebug.org/" target="_blank"></a>';
+
+    var pattern = /https:\/\/.*\//i;
+    alert(str.search(pattern))
+
+    alert(str.match(pattern)[0]);
+    var str2 = str.replace(pattern,"http://*.*.*/")
+    alert(str2)
+
+
+
+
+</script>

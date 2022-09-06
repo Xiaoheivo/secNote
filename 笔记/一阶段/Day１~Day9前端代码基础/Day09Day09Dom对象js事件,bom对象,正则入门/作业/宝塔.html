@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    编写一个打印N行宝塔的代码
+    *
+    ***
+    *****
+    *******
+
+    <br> 宝塔层数: <input type="text" name="" id="n"><button type="button" onclick="baota()">生成</button><br>
+    <script>
+        function baota() {
+            var n = document.getElementById('n').value;
+            for (var i = 1; i <= n; i++) {
+                for (var j = 0; j <= n - i; j++) {
+                    document.write('&nbsp;');
+                }
+
+                for (var x = 1; x < 2 * i; x++) {
+                    document.write('*');
+                }
+
+
+                document.write('<br>')
+            }
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>

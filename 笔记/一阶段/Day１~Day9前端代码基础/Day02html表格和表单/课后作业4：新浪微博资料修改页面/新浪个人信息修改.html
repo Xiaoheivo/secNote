@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>资料修改</title>
+</head>
+
+<body>
+	<img src="./images/logo.png" />
+	<table align="right" >
+		<tr>
+		<td><input type="text" name="search"/></td>
+		<td><input type="image"src="./images/btn_search.gif"/></td>	
+		</tr>
+	</table><br/>
+
+	<img src="./images/profile_header.jpg" />
+
+	<table >
+		<tr>
+			<td align="right">*昵称:</td>
+			<td><input type="text"/></td>
+		</tr>
+		<tr>
+			<td align="right">真实姓名:</td>
+			<td><input type="text"/></td>
+		</tr>
+	
+		<tr>
+			<td align="right">所在地:</td>
+			<td><select name="shengshi" size="1"><option>北京市</option></select>
+				<select name="quxian" size="1"><option>海淀</option></select></td>
+		</tr>
+
+		<tr>
+			<td align="right">*性别:</td>
+			<td><input type="radio" name="gender" value="male"/>男
+			<input type="radio" name="gender" value="famale"/>女
+			<input type="radio" name="gender" value="secret"/>保密</td>
+		</tr>
+
+		<tr>
+			<td align="right">生日:</td>
+			<td><select name="birth_year" size="1"><option>&nbsp;&nbsp;&nbsp;&nbsp;</option></select>年
+			<select name="birth_month" size="1"><option>&nbsp;&nbsp;&nbsp;&nbsp;</option></select>月
+			<select name="birth_day" size="1"><option>&nbsp;&nbsp;&nbsp;&nbsp;</option></select>日</td>
+		</tr>
+
+		<tr>
+			<td align="right">博客地址:</td>
+			<td><input type="text"/></td>
+		</tr>
+
+		<tr>
+			<td align="right">常用邮箱:</td>
+			<td><input type="text" value = "xiaohe.h@qq.com" disabled="disabled"/> 不可修改(disabled)</td>
+		</tr>
+        
+        <tr>
+			<td align="right">常用邮箱:</td>
+			<td><input type="text" value = "xiaohe.h@qq.com" readonly="readonly"/> 不可修改(readonly)</td>
+		</tr>
+
+		<tr>
+			<td align="right">QQ:</td>
+			<td><input type="text"/></td>
+		</tr>
+
+
+		<tr>
+			<td align="right">MSN:</td>
+			<td><input type="text"/></td>
+		</tr>
+
+		<tr>
+			<td align="right">一句话介绍:</td>
+			<td><textarea cols="40" rows="5"></textarea><br/>
+			以下信息,可作为通过客服取回账号的依据</td>
+		</tr>
+		
+		<tr>
+			<td align="right">证件类型:</td>
+			<td><select name="IDcard" size="1"><option>身份证</option></select>
+				</td>
+		</tr>
+
+		<tr>
+			<td align="right">证件号码:</td>
+			<td><input type="text"/></td>
+		</tr>
+
+		<tr>
+			<td align="right"></td>
+			<td><input type="image" src="./images/btn_save.gif"/></td>
+		</tr>
+	</table>
+
+    <table align="left">
+        <tr align="left"><td>帮助 意见反馈 微博认证及合作 开放平台 微博招聘 新浪网导航 不良信息举报</td></tr>
+        <tr align="left"><td>客服电话:400 690 0000 提示音后按1键(按当地市话标准计费)</td></tr>
+    </table>
+
+    <table align="center">
+        <tr align="right"><td>新浪公司 版权所有</td></tr>
+        <tr align="right"><td>语言:<select  name="language" size="1"><option>简体中文</option></select></td></tr>
+    </table>
+    
+</body>
+
+</html>

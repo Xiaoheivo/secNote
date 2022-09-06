@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    4. 编写代码:运输公司对用户计算运费.路程越远每公里运费越低。
+    每公里每吨货物的基本运费为10,货物重为w,距离为s,折扣为d,
+    则总运费f的计算公式为：f=10*w*s*(1-d)
+    s'<'250km 没有折扣 250'<'=s'<'500 2%折扣 500'<''=s'<'1000 5%折扣 1000'<''=s'<'2000 8%折扣 2000'<''=s'<'3000 10%折扣 3000'<'=s
+        15%折扣 <br>
+        输入货物重量(单位:吨): <input type="text" name="" id="w">
+        输入运输里程(单位:km): <input type="text" name="" id="s">
+        <button type="button" onclick="calcMoney()">计算</button>
+        <script>
+            function calcMoney() {
+                var w = parseFloat(document.getElementById('w').value);
+                var s = parseFloat(document.getElementById('s').value);
+                console.log(w);
+                console.log(s);
+                var f = 0
+                var d = 0; //折扣
+                if (s > 0) {
+                    if (s < 250) {
+                        d = 0;
+                    } else if (s <= 500) {
+                        d = 0.02;
+                    } else if (s <= 1000) {
+                        d = 0.05;
+                    } else if (s <= 2000) {
+                        d = 0.08;
+                    } else if (s <= 3000) {
+                        d = 0.1;
+                    } else {
+                        d = 0.15;
+                    }
+                    f = 10 * w * s * (1 - d);
+                    console.log('应收运费:' + f);
+                }
+            }
+
+        </script>
+</body>
+
+</html>

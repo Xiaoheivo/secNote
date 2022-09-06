@@ -1,0 +1,29 @@
+2. 用代码实现
+输入一数字作为秒数，在控制台按小时，分钟，
+秒的格式输出（ 如输入600，页面显示：0小时10分0秒 ）
+<br>
+输入秒数:<input type="text" name="inputSe" id="inputS">
+<button type="button" onclick="getTimes()">计算</button>
+
+<script>
+    function getTimes(){
+        var s = document.getElementById('inputS').value;
+        console.log(s)
+        var sec = s;
+        var minute = 0;
+        var hour = 0;
+
+        if(sec>=60){
+            minute = parseInt(sec/60);
+            if(minute >= 60 ){
+                hour = parseInt(minute/60);
+                minute = minute % 60;
+            }
+            sec = sec % 60;
+        }
+
+        console.log(s+'秒='+hour+'小时'+minute+'分钟'+sec+'秒');
+
+    }
+
+</script>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8";/>
+	<title>易趣</title>
+</head>
+
+<body>
+	<img src="./图片素材/header.jpg" alt="头部图片" />
+
+</body>
+
+</html>

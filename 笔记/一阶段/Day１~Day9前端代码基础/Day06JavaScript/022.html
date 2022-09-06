@@ -1,0 +1,16 @@
+<h1>第一个javascript代码</h1>
+<p id="demo">这是一个段落</p>
+<p id="demo2">这是第二个段落</p>
+<input type="button" onclick="displayDate()" value="显示日期(byId)">
+<button id='btn1' type="button" onclick="displayDateByClass()">显示日期(byCLassName)</button>
+
+<script>
+    function displayDate(){
+        document.getElementById("demo").innerHTML = Date();
+    }
+
+    function displayDateByClass(){
+        document.getElementById("demo2").innerHTML = Date();
+    }
+</script>
+

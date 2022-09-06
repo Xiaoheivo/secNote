@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+       <style>
+        table {
+            border: 2px solid green;
+            background-color: beige;
+            border-collapse: collapse;
+
+        }
+
+        td {
+            width: 80px;
+            height: 25px;
+            text-align: center;
+        }
+
+        .lucky {
+            background-color: red;
+        }
+
+        .usually {
+            background-color: beige;
+        }
+    </style>
+    <script>
+        function chooseOne() {
+            var num = Math.floor(Math.random() * 25 + 1);
+            console.log(num);
+            var tdList = document.getElementsByTagName("td");
+            for (var i = 0; i < 25; i++) {
+                if (document.getElementsByClassName != null) {
+                    tdList[i].removeAttribute("class");
+                }
+            }
+            document.getElementById(num).className = "lucky";
+        }
+    </script>
+</head>
+
+<body onload="chooseOne()">
+        <div id=" list">
+                <table>
+                        <tr>
+                                <td id="1">曹志</td>
+                                <td id="2">吕佳凤</td>
+                                <td id="3">胡竣杰</td>
+                                <td id="4">张杰</td>
+                                <td id="5">何耀文</td>
+                            </tr>
+                        <tr>
+                                <td id="6">田情琴</td>
+                                <td id="7">吴树林</td>
+                                <td id="8">李家俊</td>
+                                <td id="9">郭福</td>
+                                <td id="10">吴康</td>
+                            </tr>
+                        <tr>
+                                <td id="11">朱峻钢</td>
+                                <td id="12">王意</td>
+                                <td id="13">魏吉</td>
+                                <td id="14">邓伟</td>
+                                <td id="15">冯永彬</td>
+                            </tr>
+                        <tr>
+                                <td id="16">韩林</td>
+                                <td id="17">尹恒</td>
+                                <td id="18">谢晓文</td>
+                                <td id="19">蒋宗余</td>
+                                <td id="20">黎槿宸</td>
+                            </tr>
+                        <tr>
+                                <td id="21">胡伟鑫</td>
+                                <td id="22">朱小波</td>
+                                <td id="23">赵航</td>
+                                <td id="24">牟春梅</td>
+                                <td id="25">阮艺斗</td>
+
+                            </tr>
+                    </table>
+
+                <button onclick="chooseOne()">选取一位幸运观众</button>
+
+            </div>
+</body>
+
+</html>

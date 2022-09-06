@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    输入第一个数:<input type="text" id="num1"><br><br>
+    输入运算符(加(+),减(-),<br>乘(*,x,X都可),除(/)):<input type="text" id="sysmbol"><br><br>
+    输入第二个数:<input type="text" id="num2"><br><br>
+    <button type="button" onclick="calc()">点击计算结果</button><br>
+    结果:<input type="text" id="result">
+
+    <script>
+        function calc() {
+            var num1 = parseFloat(document.getElementById('num1').value);
+            var num2 = parseFloat(document.getElementById('num2').value);
+            var sysmbol = document.getElementById('sysmbol').value;
+            var result = 0;
+            if (num2 == 0 && sysmbol == '/') {
+                alert('错误!0不能作除数');
+            } else {
+                switch (sysmbol) {
+                    case '+':
+                        result = num1 + num2;
+                        alert(result);
+                        document.getElementById('result').value = result;
+                        break;
+                    case '-':
+                        result = num1 - num2;
+                        alert(result);
+                        document.getElementById('result').value = result;
+                        break;
+                    case '/':
+                        result = num1 / num2;
+                        alert(result);
+                        document.getElementById('result').value = result;
+                        break;
+                    case '*':
+                    case 'x':
+                    case 'X':
+                        result = num1 * num2;
+                        alert(result);
+                        document.getElementById('result').value = result;
+                        break;
+                    default:
+                        alert('运算符输入错误');
+                        break;
+                }
+            }
+
+
+        }
+    </script>
+</body>
+
+</html>

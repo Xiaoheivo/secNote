@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    5. 输入三个个位数,组成一个最大的三位数<br>
+
+输入第一个数: <input type="text" name="" id="num1">
+输入第二个数: <input type="text" name="" id="num2">
+输入第三个数: <input type="text" name="" id="num3">
+<button type="button" onclick="compare()">比较大小</button>
+
+<script>
+    function compare() {
+
+        var num1 = parseInt(document.getElementById('num1').value);
+        var num2 = parseInt(document.getElementById('num2').value);
+        var num3 = parseInt(document.getElementById('num3').value);
+        var temp = 0;
+        console.log(num1,num2,num3);
+        console.log(calcMax(num1,num2,num3));
+    }
+
+    function calcMax(num1,num2,num3){
+            if(num1 >= num2 && num2 >= num3){
+                num1 *= 100;
+                num2 *= 10;
+                return num1+num2+num3;
+            }else if(num1 >= num3 && num3 >= num2){
+                num1 *= 100;
+                num3 *= 10;
+                return num1+num2+num3;
+            }else if(num2 >= num1 && num1 >= num3){
+                num2 *= 100;
+                num1 *= 10;
+                return num1+num2+num3;
+            }else if(num2 >= num3 && num3 >= num1){
+                num2 *= 100;
+                num3 *= 10;
+                return num1+num2+num3;
+            }else if(num3 >= num1 && num1 >= num2){
+                num3 *= 100;
+                num1 *= 10;
+                return num1+num2+num3;
+            }else if(num3 >= num2 && num2 >= num1){
+                num3 *= 100;
+                num2 *= 10;
+                return num1+num2+num3;
+            }
+        }
+
+</script>
+</body>
+</html>

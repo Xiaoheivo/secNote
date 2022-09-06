@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>彩妆热卖</title>
+    <style>
+        .body{
+            border: #ECE6DE solid 5px;
+            width: 280px;
+            margin: auto;
+            height: auto;
+
+        }
+        .head{
+            background-color: #E9185A;
+            color: #FFFFFF;
+            width: 272px;
+            height: 35px;
+            padding-left: 8px;
+            padding-top: 10px;
+            font-family: 宋体;
+            font-weight: 600;
+        }
+
+        .item{
+            border-bottom: #BCBCBC dashed 1px;
+            height: 30px;
+            position: relative;
+        }
+        a{
+            text-decoration: none;
+            color: #686868;
+            font-size: 10px;
+            background-image: url(./图片素材/dot_01.gif);
+            background-repeat: no-repeat;
+            padding-left: 11px;
+            padding-top: 8px;
+            background-position: 2px 6px;
+            height: 30px;
+            display: block;
+        }
+        span{
+            color: #FFFFFF;
+        }
+       /* a:hover{
+            color: #E9185A;
+            background-image: url(./图片素材/dot_02.gif);
+        }*/
+        .item:hover{
+            height: 240px;
+        }
+        .item:hover a{
+            color: #E9185A;
+            background-image: url(./图片素材/dot_02.gif);
+        }
+        .item:hover .item_hide{
+            display: block;
+            color: #E9185A;;
+        }
+        .item_hide{
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            width: 272px;
+            height: 200px;
+            text-align: center;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="body">
+        <div class="head">
+            大家都喜欢的彩妆
+        </div>
+
+        <div class="item">
+           <a href=""><span>1</span>&nbsp; &nbsp; Za姬芮新能真皙美白隔离霜 35g </a>
+           <div class="item_hide">
+                <img src="./图片素材/icon-1.jpg" alt=""><br>
+                ￥62.00 最近69122人购买
+           </div>
+        </div>      
+
+        <div class="item">
+           <a href=""> <span>2</span>  &nbsp; &nbsp; 美宝莲精纯矿物奇妙新颜乳霜BB霜 30ml</a>
+           <div class="item_hide">
+                <img src="./图片素材/icon-2.jpg" alt=""><br>
+                ￥89.00 最近13610人购买
+            </div>
+        </div>
+
+        <div class="item">
+            <a href=""> <span>3</span> &nbsp; &nbsp; 菲奥娜水漾CC霜40g</a>
+            <div class="item_hide">
+                <img src="./图片素材/icon-3.jpg" alt=""><br>
+                ￥59.90 最近13403人购买
+            </div>
+        </div>
+
+        <div class="item">
+            <a href=""> <span>4</span> &nbsp; &nbsp; DHC 蝶翠诗橄榄卸妆油 200ml</a>
+            <div class="item_hide">
+                <img src="./图片素材/icon-4.jpg" alt=""><br>
+                ￥169.00 最近16757人购买
+            </div>
+        </div>
+
+
+    </div>
+</body>
+</html>
+
+

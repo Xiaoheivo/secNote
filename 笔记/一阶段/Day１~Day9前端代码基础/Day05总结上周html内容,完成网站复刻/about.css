@@ -1,0 +1,152 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, th, td {
+    margin: 0;
+    padding: 0;
+    
+}
+a{
+    text-decoration: none;
+}
+
+
+.nav{
+    background-color: #6A8372;
+    height: 100px;
+    width: 1920px;
+}
+
+.nav-logo{
+    width: 250px;
+    height: 60px;
+    float: left;
+    margin-top: 20px;
+    margin-left: 350px;
+    padding-right: 200px;
+}
+
+.nav ul{
+    list-style-type: none;
+    width: auto;
+    height: 100px;
+
+}
+.nav ul li{
+    float: left;
+    height: 100px;
+    vertical-align: middle;
+
+}
+/* .nav ul li:hover{
+    display: block;
+    background-color: #637B6B;
+} */
+
+.nav ul li a{
+    height: 60px;
+    width: 96px;
+    color: #FFFFFF;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    vertical-align: middle;
+
+    padding-top: 40px;
+}
+.active{
+    background-color: #637B6B;
+}
+
+.nav ul li a:hover{
+    background-color: #637B6B;
+}
+
+/* banner */
+.banner{
+    width: 1920px;
+}
+.banner img{
+    width: 1920px;
+}
+
+
+
+
+
+.about{
+    width: 1920px;
+}
+.about-main{
+    width: 1200px;
+    margin: auto;
+    height: 700px;
+}
+
+.main-left{
+    float: left;
+}
+.main-left h3{
+    padding-left: 15px;
+    height: 35px;
+    line-height: 35px;
+    color: #000;
+    font-size: 16px;
+    font-weight: normal;
+    background-color: #D7D7D7;
+
+}
+.main-right{
+    width: 970px;
+    height: 700px;
+    float: right;
+}
+
+.ul{
+    width: 180px;
+    padding: 10px 0 25px;
+    border-right: #DBDBDB solid 1px;
+}
+.ul ul{
+    padding: 0 5px;
+    list-style: none;
+}
+
+.ul ul li{
+    position: relative;
+    border: 1px solid #D7D7D7;
+    border-width: 1px 0;
+    margin: 5px 0;
+}
+
+.ul ul li a{
+    display: block;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-right: 10px;
+    line-height: normal;
+    color: #666;
+    font-size: 14px;
+}
+
+
+
+
+
+.footer{
+    border-top: #D5D4D4 solid 1px;
+    width: 1920px;
+    height: 120px;
+}
+.footer-copy{
+    width: 1200px;
+    text-align: center;
+    margin: auto;
+    padding-top: 45px;
+    padding-bottom: 35px;
+    font-family: "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    color: #4d4d4d;
+    
+}
+
+.footer-copy a{
+    font-family: "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    color: #4d4d4d;
+}

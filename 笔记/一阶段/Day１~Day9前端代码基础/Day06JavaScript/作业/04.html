@@ -1,0 +1,35 @@
+4. 输入1个同学的成绩，
+60-70为D，70-80为C ，
+80-90为B，90-100为A 
+不及格-60为E 
+最后输出这个同学到底是哪个分段
+<br>
+输入成绩:<input type="text"  id="score">
+<button type="button" onclick="calcScore()">计算档次</button>
+
+<script>
+    function calcScore(){
+        var score = document.getElementById("score").value;
+        console.log(score)
+        if(score >= 0 && score <=100){
+            if( score >= 90){
+                alert( "A");
+            }else if(score >= 80){
+                alert( "B");
+            }else if(score >= 70){
+                alert( "C");
+            }else if(score >= 60){
+                alert( "D");
+            }else{
+                alert("不及格");
+            }
+        }else{
+            document.getElementById('score').value = ""
+            alert( "输入错误,请重新输入");
+        }
+    }
+    
+    
+
+
+</script>

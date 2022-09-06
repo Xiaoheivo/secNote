@@ -1,0 +1,298 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, th, td {
+    margin: 0;
+    padding: 0;
+    
+}
+a{
+    text-decoration: none;
+}
+
+
+.nav{
+    background-color: #6A8372;
+    height: 100px;
+    width: 1920px;
+}
+
+.nav-logo{
+    width: 250px;
+    height: 60px;
+    float: left;
+    margin-top: 20px;
+    margin-left: 350px;
+    padding-right: 200px;
+}
+
+.nav ul{
+    list-style-type: none;
+    width: auto;
+    height: 100px;
+
+}
+.nav ul li{
+    float: left;
+    height: 100px;
+    vertical-align: middle;
+
+}
+/* .nav ul li:hover{
+    display: block;
+    background-color: #637B6B;
+} */
+
+.nav ul li a{
+    height: 60px;
+    width: 96px;
+    color: #FFFFFF;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    vertical-align: middle;
+
+    padding-top: 40px;
+}
+.nav ul li:first-child{
+    background-color: #637B6B;
+}
+
+.nav ul li a:hover{
+    background-color: #637B6B;
+}
+
+/* banner */
+.banner{
+    width: 1920px;
+}
+.banner img{
+    width: 1920px;
+}
+
+.product{
+    padding: 60px 0;
+    text-align: center;
+    width: 1920px;
+}
+
+.product-head h2{
+    color: #637B6B;
+    line-height: normal;
+    font-weight: normal;
+    font-size: 24px;
+    font-size: 2.4rem;
+}
+
+.product .items{
+    width: 1200px;
+    height: 600px;
+    margin-left: 360px;
+}
+
+.product .items ul li{
+    display: inline;
+}
+
+.product-item{
+    display: inline;
+    width: 220px;
+    height: 250px;
+    float: left;
+    margin-left: 10px;
+}
+
+.product-item img{
+    width: 220px;
+    height: 220px;
+    
+}
+
+.product-item a{
+    text-decoration: none;
+    color: #B3B3B3;
+}
+.product-item a:hover{
+    color: #9BACA0;
+}
+
+.product-foot{
+    width: 100px;
+    height: 28px;
+    border: solid 1px #999;
+    padding-top: 6px;
+    color: #9A9A9A;
+    margin: auto;
+}
+.product-foot a{
+    height: 34px;
+    text-align: center;
+}
+
+.product-foot:hover{
+    background-color: #6A8372;
+    color: #FFFFFF;
+}
+
+
+/* 产品优势 */
+
+
+.product-adv{
+    padding: 60px 0;
+    text-align: center;
+    width: 1920px;
+    background-color: #F9F9F9;
+}
+
+.product-adv-head h2{
+    color: #637B6B;
+    line-height: normal;
+    font-weight: normal;
+    font-size: 24px;
+    font-size: 2.4rem;
+}
+.product-adv-foot{
+    width: 100px;
+    height: 28px;
+    border: solid 1px #999;
+    padding-top: 6px;
+    color: #9A9A9A;
+    margin: auto;
+}
+.product-adv-foot a{
+    height: 34px;
+    text-align: center;
+}
+
+.product-adv-foot:hover{
+    background-color: #6A8372;
+    color: #FFFFFF;
+}
+
+/* 关于 */
+.about{
+    width: 1920px;
+    background-image: url(./images/about-bg.jpg);
+    padding-bottom: 60px ;
+    text-align: center;
+    width: 1920px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+
+}
+
+.about-main{
+    width: 1200px;
+    margin: auto;
+    color: #FFFFFF;
+    padding: 60px 0 60px;
+}
+.about-foot{
+    width: 100px;
+    height: 28px;
+    border: solid 1px #FFFFFF;
+    padding-top: 6px;
+    color: #FFFFFF;
+    margin: auto;
+}
+.about-foot a{
+    height: 34px;
+    text-align: center;
+}
+
+.about-foot:hover{
+    background-color: #FFFFFF;
+    color: #333333;
+
+}
+
+/* news */
+
+.news{
+    width: 1920px;
+    padding: 60px 060px;
+}
+.news-main{
+    width: 1200px;
+    margin: auto;
+}
+
+.news-content{
+    width: 1200px;
+    border: #333333 2px solid;
+    height: 600px;
+}
+.news-content-left{
+    width: 576px;
+    border: #333333 2px solid;
+    float: left;
+}
+
+.news-content-left img{
+    width: 576px;
+
+
+}
+
+.news-content-right{
+    width: 564px;
+    float: right;
+    border: #333333 2px solid;
+    height: 350px;
+}
+.time{
+    width: 60px;
+    display: block;
+    width: 75px;
+    background-color: #f2f2f2;
+    text-align: center;
+    
+}
+.time-day{
+    font-size: 25px;
+    line-height: 40px;
+    text-align: center;
+    font-family: Arial;
+    border-bottom: 1px solid #fff;
+    color: #666;
+}
+
+.time-date{
+    display: block;
+    color: #999;
+    line-height: 22px;
+    font-size: 11px;
+}
+
+.news-right-item h2{
+    font-size: 14px;    
+    font-weight: bold;
+    font-family: "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    color: #4d4d4d;
+    margin-bottom: 10px;
+    
+}
+.news-right-item h2 a{
+    text-decoration: none;
+}
+
+
+.footer{
+    border-top: #D5D4D4 solid 1px;
+    width: 1920px;
+    height: 120px;
+}
+.footer-copy{
+    width: 1200px;
+    text-align: center;
+    margin: auto;
+    padding-top: 45px;
+    padding-bottom: 35px;
+    font-family: "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    color: #4d4d4d;
+    
+}
+
+.footer-copy a{
+    font-family: "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    color: #4d4d4d;
+}

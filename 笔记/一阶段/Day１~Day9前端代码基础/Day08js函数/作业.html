@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        document.write("第1题:编写一个函数，比较三个数字的大小，按从小到大顺序输出<br>")
+        
+
+        function sortNum() {
+            var arr = new Array(45,58,21);
+            arr.sort(function(a,b){return a-b});
+            document.write(arr +',')
+        }
+        sortNum();
+
+
+        document.write('<br><br><br>第2题:编写生成4位数字验证码的函数，并生成10次，同时将结果打印出来<br>')
+        document.write('<button type="button" onclick="rand()">点击获取验证码</button><br>')
+        function rand() {
+            for (i = 1; i <= 10; i++) {
+                var rand = Math.floor(Math.random() * 10000);
+                if (rand >= 1000) {
+                    console.log(rand);
+                    document.write('您的第' + i + '个验证码是:' + rand + '<br>')
+                    continue;
+                }
+                i--;
+            }
+        }
+        // rand();
+
+        document.write("<br><br><br>")
+        document.write('第3题:某个公司采用公用电话传递数据，数据是四位的整数，在<br>传递过程中是加密的，加密规则如下：每位数字都加上5,<br>然后用除以10的余数代替该数字，再第一位和第四位交换。<br>第二位和第三位交换。请编写一个函数，传入原文，输出密文<br><br><br><br>')
+        document.write('请输入明文:<input type="text" id="Num"><br>')
+        document.write('密文:<input type="text" id="encNum" value="等待加密"><br>')
+        document.write('<button type="button" onclick="encrypt()">点击加密</button><br>')
+        function encrypt() {
+            num = Number(document.getElementById('Num').value);
+            if (num > 999 && num < 10000) {
+                var num1 = Math.floor(num / 1000);
+                var num2 = Math.floor(num / 100) % 10;
+                var num3 = Math.floor(num / 10) % 100;
+                var num4 = num % 10;
+                var temp;
+
+                num1 = (num1 + 5) % 10;
+                num2 = (num2 + 5) % 10;
+                num3 = (num3 + 5) % 10;
+                num4 = (num4 + 5) % 10;
+                console.log(num1, num2, num3, num4)
+                temp = num1;
+                num1 = num4;
+                num4 = temp;
+
+                temp = num2;
+                num2 = num3;
+                num3 = temp;
+
+                document.getElementById('encNum').value = (num1 * 1000 + num2 * 100 + num3 * 10 + num4);
+            } else {
+                alert('仅支持四位数加密,请重新输入');
+                document.getElementById('Num').value = ""
+            }
+
+        }
+
+
+
+
+
+
+
+        document.write('<br><br><br><br>第4题:利用js编写一个生成表格的函数，参数是行数和列数<br>');
+        document.write('请输入表格的行数:<input type="text" id="row">')
+        document.write('请输入表格的列数:<input type="text" id="col"><br>')
+        document.write('<button type="button" onclick="drawTable()">生成表格</button>')
+
+
+        function drawTable() {
+            var row = Number(document.getElementById('row').value);
+            var col = Number(document.getElementById('col').value);
+            document.write("<table border = '1'>");
+            for (var i = 1; i <= row; i++) {
+                document.write("<tr>");
+                for (var j = 1; j <= col; j++) {
+                    document.write("<td width = '30px' height='20px'></td>");
+                }
+                document.write('</tr>');
+            }
+            document.write('</table>');
+            console.log(row, col)
+        }
+
+    </script>
+
+
+
+</body>
+
+</html>

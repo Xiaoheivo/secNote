@@ -1,0 +1,35 @@
+5. 输入三个数,找出最大数<br>
+
+输入第一个数: <input type="text" name="" id="num1">
+输入第二个数: <input type="text" name="" id="num2">
+输入第三个数: <input type="text" name="" id="num3">
+<button type="button" onclick="compare()">比较大小</button>
+
+<script>
+    function compare() {
+        var num = new Array();
+        num[0] = parseInt(document.getElementById('num1').value);
+        num[1] = parseInt(document.getElementById('num2').value);
+        num[2] = parseInt(document.getElementById('num3').value);
+        var temp = 0;
+        console.log('------传入的值-------')
+        for(var k = 0;k < num.length; k++){
+            console.log(num[k])
+        }
+        for (var i = 0; i < num.length; i++) {
+            for (var j = 0; j < num.length; j++) {
+                if (num[j] < num[j + 1]) {
+                    temp = num[j]
+                    num[j] = num[j + 1]
+                    num[j + 1] = temp
+                }
+            }
+        }
+        console.log('---------比较后的值----------')
+        for(var k = 0;k < num.length; k++){
+            console.log(num[k])
+        }
+        console.log('最大值'+num[0])
+    }
+
+</script>

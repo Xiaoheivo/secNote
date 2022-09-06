@@ -1,0 +1,37 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    1. 找出100--999里面有多少个水仙花数，分别输出这些水仙花数？<br>
+    例：153是水仙花数，因为 153=1*1*1+5*5*5+3*3*3 <br>
+    思路：
+    1）定义判断一个数是否是水仙花数的函数；<br>
+    2）循环拿100-999之间的数给判断函数，如果判断是水仙花数则输出该数到页面
+
+
+    <script>
+
+            
+            var i = 100;
+            for(;i<1000;i++){
+                var num1 = parseInt(i / 100 );      //百位
+                var num2 = parseInt(i / 10 )%10;    //十位
+                var num3 = parseInt(i % 10 );       //个位
+                // console.log(num1,num2,num3);
+                if(num1**3+num2**3+num3**3 == i){
+                    console.log(i)
+                }
+            }
+        
+
+
+    </script>
+</body>
+</html>

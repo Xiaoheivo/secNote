@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body {
+            width: 560px;
+            margin: auto;
+            border: 3px solid red;
+            height: 460px;
+        }
+
+        div {
+            width: 100px;
+            height: 80px;
+            text-align: center;
+            line-height: 80px;
+            background-color: cadetblue;
+            float: left;
+            margin: 5px 5px;
+            border: 1px black solid;
+        }
+
+        #div {
+            width: 100px;
+            height: 80px;
+            text-align: center;
+            line-height: 80px;
+            background-color: cadetblue;
+            float: left;
+            margin: 5px 5px;
+            border: 1px black solid;
+        }
+
+        button {
+            display: block;
+            float: left;
+
+            text-align: center;
+            background-color: aquamarine;
+            font-size: 1.5em;
+            width: 100px;
+            height: 80px;
+            margin: 5px 5px;
+        }
+
+        #stop {
+            display: none;
+            font-size: 14px;
+        }
+
+        #checked {
+            background-color: blanchedalmond;
+            /* width: 100px;
+            height: 80px;
+            margin: 5px 5px; */
+        }
+    </style>
+</head>
+
+<body>
+    <div>牟春梅</div>
+    <div>何耀文</div>
+    <div>魏吉</div>
+    <div>阮艺斗</div>
+    <div>吕佳凤</div>
+    <div>韩林</div>
+    <div>张杰 </div>
+    <div>王意</div>
+    <div>田情琴</div>
+    <div>李家俊</div>
+    <div>冯永彬</div>
+    <div>朱峻钢</div>
+    <button type="button" onclick="startChk()" id="start">开始</button>
+    <button type="button" onclick="stopChk()" id="stop"></button>
+    <div>赵航</div>
+    <div>尹恒</div>
+    <div>谢晓文</div>
+    <div>黎槿宸</div>
+    <div>吴树林</div>
+    <div>吴康</div>
+    <div>蒋宗余</div>
+    <div>胡伟鑫</div>
+    <div>郭福</div>
+    <div>邓伟</div>
+    <div>胡竣杰</div>
+    <div>曹志</div>
+
+
+    <script>
+        //  min ≤ n ≤ max : Math.floor(Math.random()*(max-min)+min)
+        var divList = document.getElementsByTagName("div");
+        console.log(divList)
+        //console.log(randCheck)
+        var btnStart = document.getElementById('start');
+        var btnStop = document.getElementById('stop');
+        var randCheck = 1;
+        function startChk() {
+            btnStart.style.display = 'none';
+            btnStop.style.display = 'block';
+            time = setInterval(function () {
+                divList[randCheck].id = "div";
+                randCheck = Math.floor(Math.random() * 24);
+                temp = randCheck;
+                console.log(randCheck);
+                divList[randCheck].id = "checked";
+                document.getElementById('stop').innerHTML = '就是你了:<br>' + divList[randCheck].innerHTML
+            }, 30)
+        }
+
+        function stopChk() {
+            clearInterval(time);
+            btnStop.style.display = 'none';
+            btnStart.style.display = 'block';
+            var checked = document.getElementById('checked').innerHTML;
+            console.log(checked)
+            alert('抽中的人是:' + checked);
+            document.getElementById('checked').removeAttribute("id");
+        }
+    </script>
+</body>
+
+</html>
