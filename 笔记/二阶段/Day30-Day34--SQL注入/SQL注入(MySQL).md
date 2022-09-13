@@ -762,8 +762,10 @@ and linestring (()select * from(select user() )a)b );
 
 ### 读文件
 
+```mysql
 select load_file("路径和文件名");
 load data infile() ;
+```
 
 > load data infile 和 load data local infile ，不受 secure-file-priv 的限制 
 
@@ -778,7 +780,7 @@ SELECT "123abc" INTO DUMPFILE "c:/123.txt";
 
 要使用union查询写文件，不能使用and或者or拼接写文件
 
-#### 条件
+#### 读写文件的条件
 
 1. 绝对路径
 2. `secure_file_priv `选项的值为空(my.ini文件中设置为`secure_file_priv=`
@@ -864,7 +866,9 @@ update、insert注入通常使用报错注入，将注入语句构造在要修�
 
 update users set passwd='ccc'and payload # ' where username="xxx"
 
+#### ==update和insert要慎用!==
 
+update会修改数据库里原有记录的值,如果select注入只能使用延时盲注的情况或者使用update是最便捷或者最优解的情况下,使用update可以加上where,给一个不存在的值,保护原有数据。如果是在公司或者单位内部测试,可以让开发人员搭建一个测试环境进行渗透测试
 
 ## dnslog带外注入的原理
 
@@ -1004,7 +1008,9 @@ select * from t_xxx where c_xx like '%xx注入点'
 
 - --passwords查看密码
 
-- --os-shell获取os-shell
+- --os-shell获取os-shell      //需要有写文件的权限,将木马写入到目标系统
+
+  --os-shell原理:对于mysql数据库来说，--os-shell的本质就是写入两个php文件，其中的tmpugvzq.php可以让我们上传文件到网站路径下,然后[sqlmap](https://so.csdn.net/so/search?q=sqlmap&spm=1001.2101.3001.7020)就会通过上面这个php上传一个用于命令执行的tmpbylqf.php到网站路径下，让我们命令执行，并将输出的内容返回sqlmap端。  所以,==获取os-shell必须要有写入文件的权限!==
 
 - --os-pwn反弹shell
 
@@ -1030,7 +1036,7 @@ select * from t_xxx where c_xx like '%xx注入点'
 
 - --sql-query 直接执行sql语句
 
--  --user-agent = ‘指定的user-agent’ 指定ua
+-  --user-agent =‘指定的user-agent’ 指定ua
 
 -  --cookie "xx=xx" 指定cookie
 

