@@ -1022,7 +1022,7 @@ select * from t_xxx where c_xx like '%xx注入点'
 
 - --batch全部使用默认选择
 
-- --table -D "数据库" //列出数据库的表名
+- --tables -D "数据库" //列出数据库的表名
 
 - --columns -T "表名" -D "数据库" //获取表的列名
 
