@@ -10,7 +10,7 @@ CSS（Cross Site Scripting）--->>>XSS（跨站脚本攻击）
 
 ## XSS的危害
 
-XSS能够产生的危害依赖于浏览器客户端脚本解析引擎的能力。
+XSS能够产生的危害依赖于浏览器获取其他客户端脚本解析引擎的能力。
 
 * 技术上
 
@@ -88,12 +88,13 @@ html实体字符转义只有在标签属性内部才会被解析成有效的js�
 2. 双写绕过
 3. 换行绕过
 4. `替换引号和括号绕过
-5. 生僻元素绕过:<svg>
-6. 注释绕过:`//   <!-- -->     --!>`
-7. 拉丁字母绕过,常用网站:https://unicode-table.com/cn/blocks/latin-extended-a/
-8. img标签不写右尖括号
-9. 提前嵌入反斜杠绕过
-10. 编码绕过:html实体化编码,js内置函数:String.fromCharCode()编码,url编码,base64编码绕过
+5. /代替引号
+6. 生僻元素绕过:<svg>
+7. 注释绕过:`//   <!-- -->     --!>`
+8. 拉丁字母绕过,常用查询网站:https://unicode-table.com/cn/blocks/latin-extended-a/
+9. img标签不写右尖括号
+10. 提前嵌入反斜杠绕过
+11. 编码绕过:html实体化编码,js内置函数:String.fromCharCode()编码,url编码,base64编码绕过
 
 ## 绕过总结
 
@@ -101,6 +102,10 @@ html实体字符转义只有在标签属性内部才会被解析成有效的js�
 对于一个输入点,可以直接尝试输入	xxx"><scRipt>alert('onblur=alert")</scRipt> 	来测试该输入点对大小写和script标签事件和引号、尖括号、正斜杠的的过滤情况
 
 如果输入点对输入的数据没有任何过滤,可直接采用闭合value,增加事件的方式触发XSS==》 	 x"onmousemove="alert(1)"
+
+<textarea></textarea>
+
+<td></td>
 
 如果双引号被替换成html实体编码,可以尝试使用单引号,也许单引号没有被过滤
 
@@ -154,7 +159,14 @@ A网页设置的cookie,B网页不能读取,除非这两个网页同源
 
 ### http-only
 
-一个服务器下发给客户端的http响应头的字段内容
+1. 什么是http-only？
+   HttpOnly是包含在http返回头Set-Cookie里面的一个附加的flag，所以它是后端服务器对cookie设置的一个附加的属性，在生成cookie时使用HttpOnly标志有助于减轻客户端脚本访问受保护cookie的风险（如果浏览器支持的话）
+   通过js脚本将无法读取到cookie信息，这样能有效的防止XSS攻击。
+
+2. 这个是干什么用的？其他相关点!
+   大多数XSS攻击都是针对会话cookie的盗窃。后端服务器可以通过在其创建的cookie上设置HttpOnly标志来帮助缓解此问题，这表明该cookie在客户端上不可访问。
+   如果支持HttpOnly的浏览器检测到包含HttpOnly标志的cookie，并且客户端脚本代码尝试读取该cookie，则浏览器将返回一个空字符串作为结果。这会通过阻止恶意代码（通常是XSS）将数据发送到攻击者的网站来使攻击失败。
+
 
 ### 安全策略下的通信
 
@@ -180,7 +192,7 @@ A网页设置的cookie,B网页不能读取,除非这两个网页同源
 
 ​	从跨域的网站上读取`<img>;<iframe>;<link>`不受限制
 
-## XSS修复思路
+## XSS防范思路
 
 1. 对普通字符的输入点输入的内容进行html实体化编码,对输入的href是属性值编写正确的正则进行匹配
 

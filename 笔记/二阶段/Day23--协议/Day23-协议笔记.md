@@ -30,7 +30,7 @@ Hyper-Text Transfer Protocol
 
 ##### HTTP协议最新版本?
 
-​	==3(HTTP3 也叫做QUIC协议)==
+​	==3(HTTP3, 也叫做QUIC协议)==
 
 ##### QUIC协议由传输层哪个协议支撑?
 
