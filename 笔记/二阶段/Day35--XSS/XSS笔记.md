@@ -143,7 +143,15 @@ JS语句是严格区分大小写的,如果提交的payload被全部替换成大�
 
 replace(/-->/g, '😂')   如果XSS输入或输出点被注释,且注释符被正则替换,可以使用  --!>  去结尾,绕过这种正则
 
+
+
 ```
+
+## XSS利用手法
+
+使用键盘记录时,可以多次构造错误提示,使受害者多次尝试常用密码,拿到其历史密码和常用密码后,可以构造字典,尝试登录他的其他常用网站
+
+
 
 ## 浏览器同源安全策略
 
@@ -175,6 +183,18 @@ A网页设置的cookie,B网页不能读取,除非这两个网页同源
 浏览器仍然可以自动带上cookie访问当前页面网站
 
 一般默认情况下:当页面中的js代码去访问其他网站是,不会自动带上cookie访问非同源网站,cookie就无法传递
+
+```
+1.会话cookie中缺少HttpOnly属性会导致攻击者可以通过程序(JS脚本、Applet等)获取到用户的cookie信息，造成用户cookie信息泄露，增加攻击者的跨站脚本攻击威胁。
+
+2.HttpOnly是微软对cookie做的扩展，该值指定cookie是否可通过客户端脚本访问。Microsoft Internet Explorer 版本 6 Service Pack 1 和更高版本支持cookie属性HttpOnly。 
+
+3.如果在Cookie中没有设置HttpOnly属性为true，可能导致Cookie被窃取。窃取的Cookie可以包含标识站点用户的敏感信息，如ASP.NET会话ID或Forms身份验证票证，攻击者可以重播窃取的Cookie，以便伪装成用户或获取敏感信息，进行跨站脚本攻击等。 
+
+4.如果在Cookie中设置HttpOnly属性为true，兼容浏览器接收到HttpOnly cookie，那么客户端通过程序(JS脚本、Applet等)将无法读取到Cookie信息，这将有助于缓解跨站点脚本威胁。
+```
+
+
 
 ### 非同源的情况下
 

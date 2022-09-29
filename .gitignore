@@ -3,7 +3,10 @@
 工具/
 
 
-
+*.doc
+*.docx
+*.ppt
+*.pptx
 
 
 

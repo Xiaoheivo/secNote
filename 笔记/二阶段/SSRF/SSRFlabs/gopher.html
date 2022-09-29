@@ -1,0 +1,18 @@
+    输入要转换的header</br><textarea id="header"  rows="10" cols="70"></textarea>输入端口<input type="text" id="port"></br>
+    转换后的结果:(再次URL编码)</br>
+    <textarea id="result"rows="10" cols="70" disabled></textarea></br>
+    <input type="button" id="btn" value="生成" onclick="change()">
+<script>
+    function change(){
+        var header = document.getElementById("header").value;
+        var port = document.getElementById('port').value;
+        header = header.match(/.*\nHost:.+/)[0]     //截取前两行
+        header = header.replaceAll(' ',"%20").replaceAll(/\n/g,"%0d%0a").replaceAll("?","%3f");//替换特殊字符
+        var result =  "gopher://www.baidu.com:"+port+"/_"+header +"%0d%0a";
+        result=encodeURI(result);        //再次URL编码
+        document.getElementById('result').innerText =result;
+    }
+
+
+
+</script>

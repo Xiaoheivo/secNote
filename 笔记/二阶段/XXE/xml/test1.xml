@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE note [
+<!ELEMENT note (to,from,head,body)>
+<!ELEMENT to (#PCDATA)>
+<!ELEMENT from (#PCDATA)>
+<!ELEMENT head (#PCDATA)>
+<!ELEMENT body (#PCDATA)>
+<!ELEMENT 中文 (#PCDATA)>
+]>
+
+<note>
+	<to>afei</to>
+    <from>xiaohe</from>
+    <head>message</head>
+    <body>nnsshxs</body>
+    <中文>中文测试</中文>
+</note>
