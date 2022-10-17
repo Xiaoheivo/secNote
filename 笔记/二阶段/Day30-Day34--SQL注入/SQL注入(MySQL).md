@@ -1138,7 +1138,7 @@ select * from t_xxx where c_xx like '%xx注入点'
 ### SQLMap表单注入
 
 ```python
-python sqlmap.py -u "注入点" --from --batch  即可自动注入
+python sqlmap.py -u "注入点" --form --batch  即可自动注入
 ```
 
 ### SQLMap对url进行POST注入
