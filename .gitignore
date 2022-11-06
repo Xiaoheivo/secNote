@@ -4,9 +4,8 @@
 *.zip
 *耀文*
 项目/
+/项目
 
-*.doc
-*.docx
 *.ppt
 *.pptx
 
